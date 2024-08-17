@@ -6,7 +6,7 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './Dashboard';
-import CreateCommand from './pages/CreateCommand';
+//import CreateCommand from './pages/CreateCommand';
 import Test from './test';
 
 import { ToastContainer } from 'react-toastify';
@@ -64,7 +64,7 @@ function App() {
       <ToastContainer></ToastContainer>
       <Routes>
         <Route path="/SignIn" element={<><PageTitle title="Signin SelectionLocal" /><SignIn /></>} />
-        <Route path="/CreateCommand/:clientId" element={<> <PageTitle title="Create Command" /> <CreateCommand /></>} />
+        <Route path="/CreateCommand/:clientId" element={<> <PageTitle title="Create Command" /> <br /></>} />
         <Route path="/test" element={<Test />} />
         <Route path="/*" element={<Dashboard />} />
 

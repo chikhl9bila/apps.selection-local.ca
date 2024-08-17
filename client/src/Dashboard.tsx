@@ -20,7 +20,7 @@ import ClientProfile from './components/ClientProfile';
 import Commands from './components/Commands';
 
 
-import CommandInfo from './pages/CommandInfo';
+//import CommandInfo from './pages/CommandInfo';
 
 
 function Dashboard() {
@@ -113,7 +113,7 @@ function Dashboard() {
           element={
             <>
               <PageTitle title="Command Info" />
-              <CommandInfo />
+              <br />
             </>
           }
         />
