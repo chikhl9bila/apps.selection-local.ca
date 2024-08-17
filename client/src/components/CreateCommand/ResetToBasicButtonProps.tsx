@@ -13,9 +13,12 @@ const ResetToBasicButton: React.FC<ResetToBasicButtonProps> = ({ category }) => 
   };
 
   return (
-    <button onClick={handleResetToBasic} className="bg-blue-500 text-white p-2 rounded">
-      Reset to Basic Quantities for {category}
-    </button>
+      <button
+        onClick={handleResetToBasic}
+        className="bg-blue-600 text-white p-2 rounded-md shadow-lg hover:bg-blue-700 transition duration-300"
+      >
+        Reset to Basic Quantities for {category}
+      </button>
   );
 };
 

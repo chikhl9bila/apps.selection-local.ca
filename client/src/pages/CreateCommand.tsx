@@ -111,8 +111,11 @@ const CreateCommande: React.FC = () => {
       {selectedCategory !== 'FIN' && selectedTitle && (
         <>  
           <LivraisonButtons />
+          <div className="flex justify-end">
+
           <ResetButton category={selectedCategory}></ResetButton>
           <ResetToBasicButton category={selectedCategory} /> 
+          </div>
           <FoodCategory
             icon={selectedTitle.icon} 
             step={selectedTitle.step.toString()}

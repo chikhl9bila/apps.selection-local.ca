@@ -1099,7 +1099,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côtes levées de porc entières nature",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 90,
@@ -1111,7 +1111,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côte levée quatre côtes BBQ",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 91,
@@ -1123,7 +1123,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côtelette de porc avec os",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 92,
@@ -1135,7 +1135,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Bacon",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 93,
@@ -1147,7 +1147,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Bacon tranché cov",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 94,
@@ -1159,7 +1159,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Escalope de porc attendri",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 95,
@@ -1171,7 +1171,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côte de porc bbq",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 96,
@@ -1183,7 +1183,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côte de porc érable chipotlé",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 97,
@@ -1195,7 +1195,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côte de porc teriyaki",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 98,
@@ -1207,7 +1207,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Brochettes de porc souvlaki",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 99,
@@ -1219,7 +1219,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côtelette de porc souvlaki",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 100,
@@ -1231,7 +1231,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Côtelette de porc terriaki",
       category: "PORC",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 101,
@@ -1243,7 +1243,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Porc effiloché a la texane",
       category: "PORC",
       quantities: [0, 1, 1, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 102,
@@ -1255,7 +1255,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poulet Haché",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 103,
@@ -1267,7 +1267,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Haut de cuisse de poulet sans os",
       category: "POULET",
       quantities: [1, 2, 1, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 104,
@@ -1279,7 +1279,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poulet de grain entier",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 105,
@@ -1291,7 +1291,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poulet Entier",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 106,
@@ -1303,7 +1303,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Cubes de brochette de poulet",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 107,
@@ -1315,7 +1315,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine naturel de grain",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 108,
@@ -1327,7 +1327,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine de poulet miel et ail",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 109,
@@ -1339,7 +1339,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine de poulet et BBQ",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 110,
@@ -1351,7 +1351,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine de poulet méditerranéenne",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 111,
@@ -1363,7 +1363,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Tournedos de poulet miel et ail",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 112,
@@ -1375,7 +1375,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Ailes de poulet BBQ",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 113,
@@ -1387,7 +1387,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Tournedos de poulet méditerranéen",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 114,
@@ -1399,7 +1399,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poulet général tao avec sauce",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 115,
@@ -1411,7 +1411,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine de poulet farcie jambon fromage",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 116,
@@ -1423,7 +1423,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Poitrine de poulet farcie brocoli fromage",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 117,
@@ -1435,7 +1435,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Filet de poulet pané",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 118,
@@ -1447,7 +1447,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Burger de poulet panné",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 119,
@@ -1459,31 +1459,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Steak de poulet grillé",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
-    },
-    {
-      id: 120,
-      name: "Ailes de poulet nature",
-      description: "Produit Canadien",
-      format: "2 x 1 kg",
-      price: 65.00,
-      imageSrc: "/path/to/image40.jpg",
-      imageAlt: "Ailes de poulet nature",
-      category: "POULET",
-      quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
-    },
-    {
-      id: 119,
-      name: "Croquettes de poulet",
-      description: "Croquettes de poulet",
-      format: "2 X 1KG",
-      price: 49.00,
-      imageSrc: "/path/to/image41.jpg",
-      imageAlt: "Croquettes de poulet",
-      category: "POULET",
-      quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 120,
@@ -1495,7 +1471,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Ailes de poulet",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 121,
@@ -1507,7 +1483,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Egg roll au poulet",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 122,
@@ -1519,7 +1495,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Escalopes de poulet",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 123,
@@ -1531,7 +1507,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Brochettes de poulet souvlaki",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
+      basicQuantities: [0, 0, 0, 0]
     },
     {
       id: 124,
@@ -1543,8 +1519,31 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       imageAlt: "Coq au porc érable et chipotle",
       category: "POULET",
       quantities: [0, 0, 0, 0],
-      "basicQuantities": [0, 0, 0, 0]
-    }
+      basicQuantities: [0, 0, 0, 0]
+    },{
+      id: 125,
+      name: "Ailes de poulet nature",
+      description: "Produit Canadien",
+      format: "2 x 1 kg",
+      price: 65.00,
+      imageSrc: "/path/to/image40.jpg",
+      imageAlt: "Ailes de poulet nature",
+      category: "POULET",
+      quantities: [0, 0, 0, 0],
+      basicQuantities: [0, 0, 0, 0]
+    },
+    {
+      id: 126,
+      name: "Croquettes de poulet",
+      description: "Croquettes de poulet",
+      format: "2 X 1KG",
+      price: 49.00,
+      imageSrc: "/path/to/image41.jpg",
+      imageAlt: "Croquettes de poulet",
+      category: "POULET",
+      quantities: [0, 0, 0, 0],
+      basicQuantities: [0, 0, 0, 0]
+    },
     // Add more products as needed
   ]);
   const [nombreOfLivraison, setNombreOfLivraison] = useState<number>(4);
@@ -1595,21 +1594,33 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.category === category
-          ? { ...product, quantities: product.quantities.map(() => 0) }
+          ? { 
+              ...product, 
+              quantities: product.quantities
+                .slice(0, nombreOfLivraison) // Only reset up to nombreOfLivraison
+                .map(() => 0) 
+            }
           : product
       )
     );
   };
+  
 
   const resetToBasicQuantitiesByCategory = (category: string) => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.category === category
-          ? { ...product, quantities: [...product.basicQuantities] }
+          ? { 
+              ...product, 
+              quantities: [
+                ...product.basicQuantities.slice(0, nombreOfLivraison) // Only use basic quantities up to nombreOfLivraison
+              ]
+            }
           : product
       )
     );
   };
+  
 
   return (
     <ProductContext.Provider
