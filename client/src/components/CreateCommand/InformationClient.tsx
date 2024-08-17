@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const InformationClient: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Get the id from the URL params
+  const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
   const [clientData, setClientData] = useState<any>(null);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const InformationClient: React.FC = () => {
     };
 
     fetchClientData();
-  }, [id]);
+  }, [clientId]);
 
   if (!clientData) {
     return <div>Loading...</div>; // Show loading state if data is not yet fetched
