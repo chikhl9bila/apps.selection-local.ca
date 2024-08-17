@@ -11,6 +11,7 @@ interface Command {
     date: string;
     consultantId: string;
     clientId: string;
+    clientName: string; // Add clientName to the interface
     note?: string;
     object?: any;
 }
@@ -30,7 +31,7 @@ const Commands: React.FC = () => {
                     },
                 });
                 setCommands(response.data.commands);
-            } catch (error:any) {
+            } catch (error: any) {
                 const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
                 toast.error(errorMessage, {
                     position: toast.POSITION.TOP_RIGHT,
@@ -44,11 +45,17 @@ const Commands: React.FC = () => {
         fetchCommands();
     }, []);
 
-    const handleViewDetails = (commandId: string) => {
+    const handleViewClient = (clientId: string) => {
+        navigate(`/clientInfo/${clientId}`);
+    };
+
+    const handleViewCommand = (commandId: string) => {
         navigate(`/commandInfo/${commandId}`);
     };
 
-    return loading ? (<Loader></Loader>) : (
+    return loading ? (
+        <Loader />
+    ) : (
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">All Commands</h2>
             <div className="overflow-x-auto">
@@ -56,8 +63,8 @@ const Commands: React.FC = () => {
                     <thead>
                         <tr className="bg-gray-200 text-left">
                             <th className="py-2 px-4 border-b">Order Number</th>
+                            <th className="py-2 px-4 border-b">Client Name</th>
                             <th className="py-2 px-4 border-b">Date</th>
-                            <th className="py-2 px-4 border-b">Client ID</th>
                             <th className="py-2 px-4 border-b">Actions</th>
                         </tr>
                     </thead>
@@ -68,16 +75,22 @@ const Commands: React.FC = () => {
                                 className="bg-white hover:bg-gray-100"
                             >
                                 <td className="py-2 px-4 border-b">{command.orderNumber}</td>
+                                <td className="py-2 px-4 border-b">{command.clientName}</td>
                                 <td className="py-2 px-4 border-b">
                                     {new Date(command.date).toLocaleDateString()}
                                 </td>
-                                <td className="py-2 px-4 border-b">{command.clientId}</td>
                                 <td className="py-2 px-4 border-b space-x-2">
                                     <button
-                                        onClick={() => handleViewDetails(command._id)}
+                                        onClick={() => handleViewClient(command.clientId)}
+                                        className="bg-blue-500 text-white py-1 px-3 rounded"
+                                    >
+                                        View Client
+                                    </button>
+                                    <button
+                                        onClick={() => handleViewCommand(command._id)}
                                         className="bg-green-500 text-white py-1 px-3 rounded"
                                     >
-                                        View Details
+                                        View Command
                                     </button>
                                 </td>
                             </tr>

@@ -2,7 +2,11 @@ const Consultant = require('../models/consultantModel');
 const Client = require("./../models/clientModel");
 const Command = require("./../models/commandModel");
 const jwt = require('jsonwebtoken');
+const MetaData = require("./../models/dbMetaData")
 require("dotenv").config();
+
+
+
 
 
 
@@ -134,41 +138,62 @@ const getAllClients = async (req, res) => {
 };
 
 const createCommand = async (req, res) => {
-    const { orderNumber, date, clientId, note, object } = req.body;
-    try {
-        // Check if the client exists
-        const client = await Client.findById(clientId);
-        if (!client) {
-            return res.status(404).json({ message: 'Client not found' });
-        }
+    const { date, clientId, note, object } = req.body;
 
-        // Create the new command
-        const newCommand = new Command({
-            orderNumber,
-            date,
-            consultantId: req.consultant._id,  // Add the consultant ID from the authenticated user
-            clientId,
-            note,
-            object
+    let metaData = await MetaData.findOne();
+
+    // If no record exists, create one
+    if (!metaData) {
+        metaData = new MetaData({
+            lastClientId: 1,
+            lastCommandId: 1,
         });
-
-        // Save the command
-        const savedCommand = await newCommand.save();
-
-        // Update the client's `modified` field and `commandId`
-        client.beenConsulted = true;
-        client.commandId = savedCommand._id;
-        client.consultantId = req.consultant._id;
-        await client.save();
-
-        req.consultant.clients.push(client._id);
-        await req.consultant.save();
-
-        // Return the created command
-        res.status(201).json({ savedCommand });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        await metaData.save();
     }
+
+    const orderNumber = metaData.lastCommandId;
+    metaData.lastCommandId++;
+    metaData.save()
+        .then(async () => {
+            try {
+                // Check if the client exists
+                const client = await Client.findById(clientId);
+                if (!client) {
+                    return res.status(404).json({ message: 'Client not found' });
+                }
+
+                // Create the new command
+                const newCommand = new Command({
+                    orderNumber,
+                    date,
+                    consultantId: req.consultant._id,  // Add the consultant ID from the authenticated user
+                    clientId,
+                    note,
+                    object,
+                    clientName: client.fullName
+                });
+
+                // Save the command
+                const savedCommand = await newCommand.save();
+
+                // Update the client's `modified` field and `commandId`
+                client.beenConsulted = true;
+                client.commandId = savedCommand._id;
+                client.consultantId = req.consultant._id;
+                await client.save();
+
+                req.consultant.clients.push(client._id);
+                await req.consultant.save();
+
+                // Return the created command
+                res.status(201).json({ savedCommand });
+            } catch (error) {
+                res.status(500).json({ message: 'Server error', error: error.message });
+            }
+        }).catch(() => {
+            res.status(500).json({ message: 'Server error', error: error.message });
+        })
+    res.status(500).json({ message: 'Server error', error: error.message });
 };
 
 const getCommandById = async (req, res) => {

@@ -11,6 +11,9 @@ const commandSchema = new Schema({
         type: Date,
         required: true
     },
+    clientName: {
+        type: String,
+    },
     consultantId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Consultant', 
