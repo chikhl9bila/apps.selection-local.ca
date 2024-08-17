@@ -1,0 +1,19 @@
+const mongoose = require("mongoose"); 
+require('dotenv').config()  
+
+
+
+const connectDB = () => {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(process.env.MONGO_URI)
+            .then(() => {
+                resolve();
+            })
+            .catch((error) => {
+                reject();  
+            });
+    });
+};
+
+
+module.exports = connectDB ; 
