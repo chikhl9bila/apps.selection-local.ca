@@ -65,7 +65,7 @@ function App() {
       <Routes>
         <Route path="/SignIn" element={<><PageTitle title="Signin SelectionLocal" /><SignIn /></>} />
         <Route path="/CreateCommand/:clientId" element={<> <PageTitle title="Create Command" /> <CreateCommand /></>} />
-        <Route path="/test" element={<Test />} />
+        <Route path="/test1" element={<Test />} />
         <Route path="/*" element={<Dashboard />} />
 
 
