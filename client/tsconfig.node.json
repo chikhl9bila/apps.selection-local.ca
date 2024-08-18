@@ -1,6 +1,3 @@
-/*
-whis json file for cnfiguration
-*/
 {
   "compilerOptions": {
     "composite": true,

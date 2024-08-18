@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loader from '../../common/Loader';
 import axios from 'axios';
 import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
@@ -37,7 +38,7 @@ const InformationClient: React.FC = () => {
   }, [clientId]);
 
   if (!clientData) {
-    return <div>Loading...</div>; // Show loading state if data is not yet fetched
+    return <Loader/>; // Show loading state if data is not yet fetched
   }
 
   const { appointment, address, phoneNumbers, freezer, weeklyBudget, fullName, note, language, clients } = clientData;
