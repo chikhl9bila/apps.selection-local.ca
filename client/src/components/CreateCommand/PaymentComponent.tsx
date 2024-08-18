@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useProductContext } from '../../contexts/ProductContext';
 import Select from './Select';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 const PaymentComponent = () => {
   const [paymentType, setPaymentType] = useState('Financement');

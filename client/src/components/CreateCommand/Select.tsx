@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Radio, RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { useProductContext } from '../../contexts/ProductContext'; // Import the context
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

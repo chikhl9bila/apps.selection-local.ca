@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 const InformationClient: React.FC = () => {
   const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
@@ -17,7 +18,7 @@ const InformationClient: React.FC = () => {
           throw new Error('No token available');
         }
 
-        const response = await axios.get(`http://localhost:7070/api/consultant/getClientById/${id}`, {
+        const response = await axios.get(`http://localhost:7070/api/consultant/getClientById/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
             'Content-Type': 'application/json', // Ensure the request is in JSON format

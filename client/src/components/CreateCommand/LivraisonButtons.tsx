@@ -1,5 +1,6 @@
 import React from 'react';
 import { useProductContext } from '../../contexts/ProductContext';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 const LivraisonButtons: React.FC = () => {
   const { updateNombreOfLivraison, nombreOfLivraison } = useProductContext();

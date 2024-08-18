@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { useProductContext } from '../contexts/ProductContext';
 import LivraisonButtons from '../components/CreateCommand/LivraisonButtons';
 import ListofProducts from '../components/CreateCommand/ListofProducts';
@@ -15,6 +15,13 @@ import ModalResume from '../components/CreateCommand/ModalResume';
 import FoodCategory from '../components/CreateCommand/FoodCategory';
 import ResetButton from '../components/CreateCommand/ResetButton';
 import ResetToBasicButton from '../components/CreateCommand/ResetToBasicButtonProps';
+import FormResilation from '../components/CreateCommand/FormResilation';
+import PdfPrintableContent from '../components/CreateCommand/PdfPrintableContent';
+import OrderControl from '../components/CreateCommand/OrderControl';
+
+import ReactToPrint from 'react-to-print';
+
+import  '../components/CreateCommand/tailwind.output.css';
 
 interface Title {
   step: number;
@@ -104,17 +111,20 @@ const CreateCommande: React.FC = () => {
 
   // Find the title object that matches the selected category
   const selectedTitle = titles.find(title => title.category === selectedCategory);
+  const printRef = useRef<HTMLDivElement | null>(null);
+
 
   return (
-    <div>
+    <div className='bg-white'>
       <NavbarCommande onCategoryChange={handleCategoryChange} />
       {selectedCategory !== 'FIN' && selectedTitle && (
         <>  
-          <LivraisonButtons />
-          <div className="flex justify-end">
-
-          <ResetButton category={selectedCategory}></ResetButton>
-          <ResetToBasicButton category={selectedCategory} /> 
+          <div className="flex justify-between items-center my-4 px-6">
+            <LivraisonButtons />
+            <div className="flex space-x-4">
+              <ResetButton category={selectedCategory} />
+              <ResetToBasicButton category={selectedCategory} />
+            </div>
           </div>
           <FoodCategory
             icon={selectedTitle.icon} 
@@ -124,25 +134,67 @@ const CreateCommande: React.FC = () => {
             note="VEUILLEZ NOTER QUE LES IMAGES SONT À TITRES INDICATIVES SEULEMENT. MERCI"
           />
           <ListofProducts category={selectedCategory} />
+          <ModalResume />
         </>
       )}
-      <ModalResume />
+      
       
       {selectedCategory === 'FIN' && (
-        <>
-          <ResumeBon />
-          <ButtonDivider onClick={toggleInformationClient} title="Information du Client" />
-          {isInfoVisible && <InformationClient />}
-          <ButtonDivider onClick={toggleMenuBase} title="Open Menu" />
-          {isMenuBase && <MenuBase />}
-          <ButtonDivider onClick={toggleFraisMention} title="Frais de Manutention" />
-          {isFraisMentionVisible && <FraisMention />}
-          <ButtonDivider onClick={togglePayment} title="Paiement" />
-          {isPaymentVisible && <PaymentComponent />}
-          <ButtonDivider onClick={toggleFormulaire} title="Énoncé des droits de résolution du consommateur" />
-          {isFormulaire && <Formulaire />}
-        </>
-      )}
+  <>
+    <ResumeBon />
+
+    <ButtonDivider
+      onClick={toggleInformationClient}
+      title="Information du Client"
+      className={`my-3 hover:bg-gray-200 transition duration-300 ${isInfoVisible ? 'bg-blue-100' : ''}`}
+    />
+    {isInfoVisible && <InformationClient />}
+
+    <ButtonDivider
+      onClick={toggleMenuBase}
+      title="Open Menu"
+      className={`my-3 hover:bg-gray-200 transition duration-300 ${isMenuBase ? 'bg-blue-100' : ''}`}
+    />
+    {isMenuBase && <MenuBase />}
+
+    <ButtonDivider
+      onClick={toggleFraisMention}
+      title="Frais de Manutention"
+      className={`my-3 hover:bg-gray-200 transition duration-300 ${isFraisMentionVisible ? 'bg-blue-100' : ''}`}
+    />
+    {isFraisMentionVisible && <FraisMention />}
+
+    <ButtonDivider
+      onClick={togglePayment}
+      title="Paiement"
+      className={`my-3hover:bg-gray-200 transition duration-300 ${isPaymentVisible ? 'bg-blue-100' : ''}`}
+    />
+    {isPaymentVisible && <PaymentComponent />}
+
+    <ButtonDivider
+      onClick={toggleFormulaire}
+      title="Énoncé des droits de résolution du consommateur"
+      className={`my-3  hover:bg-gray-200 transition duration-300 ${isFormulaire ? 'bg-blue-100' : ''}`}
+    />
+    {isFormulaire && <FormResilation />}
+    {/* PDF Generation Button */}
+    <div className="my-4 px-6">
+            <ReactToPrint
+              trigger={() => <button className="btn btn-primary">Generate PDF</button>}
+              content={() => printRef.current}
+            />
+          </div>
+
+          {/* PDF Printable Content */}
+          <div style={{ display: 'none' }}>
+            <div ref={printRef}>
+              <PdfPrintableContent />
+            </div>
+          </div>
+        <OrderControl></OrderControl>
+  </>
+)}
+
     </div>
   );
 };

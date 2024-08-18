@@ -1,4 +1,5 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 export default function Formulaire() {
   return (

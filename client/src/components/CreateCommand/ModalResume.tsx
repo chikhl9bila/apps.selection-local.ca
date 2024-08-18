@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useProductContext } from '../../contexts/ProductContext';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
-// Define the types for product and context
 interface Product {
   quantities: number[];
   price: number;
@@ -38,17 +38,15 @@ export default function ModalResume() {
     return acc + (livraison.totalPrice - basicTotalPrice);
   }, 0);
 
-  // Calculate the dynamic total (sum of all delivery prices)
   const dynamicTotal = totalPerLivraison.reduce((acc, livraison) => acc + livraison.totalPrice, 0);
-
-  // Sample data for "pi3" (replace with your actual data)
-  const pi3Values: string[] = ["3 pi³", "3 pi³"]; // Assuming these are static for each livraison
+  const pi3Values: string[] = ["3 pi³", "3 pi³"];
 
   return (
     <>
       <div
         aria-live="assertive"
         className="pointer-events-none fixed inset-0 flex items-end justify-end px-4 py-6 sm:p-6"
+        style={{ zIndex: 9999 }} // Set a high z-index value
       >
         <div className="flex w-full max-w-sm">
           <Transition

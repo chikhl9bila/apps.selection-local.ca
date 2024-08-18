@@ -1,5 +1,6 @@
 import React from 'react';
 import garantyImage from '../../images/garantyClientGarantie.png';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 const ResumeBon: React.FC = () => {
   return (

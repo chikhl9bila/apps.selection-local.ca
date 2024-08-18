@@ -1,6 +1,7 @@
 import React from 'react';
 import { useProductContext } from '../../contexts/ProductContext';
 import ProductCard from './ProductCard';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 interface ListofProductsProps {
   category: string;

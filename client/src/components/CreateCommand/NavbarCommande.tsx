@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
+
 
 interface Tab {
   name: string;

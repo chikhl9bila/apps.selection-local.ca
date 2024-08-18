@@ -1,5 +1,6 @@
 import React from 'react';
 import SummaryTable from './SummaryTable';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 // Define the type for items
 interface Item {

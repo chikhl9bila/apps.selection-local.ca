@@ -1,5 +1,6 @@
 import React from 'react';
 import fraisMentionImage from '../../images/FraisMention.webp';
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
 interface Stat {
   label: string;
