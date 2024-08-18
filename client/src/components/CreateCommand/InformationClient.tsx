@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loader from '../../common/Loader';
 import axios from 'axios';
 
 const InformationClient: React.FC = () => {
@@ -17,7 +18,7 @@ const InformationClient: React.FC = () => {
           throw new Error('No token available');
         }
 
-        const response = await axios.get(`http://localhost:7070/api/consultant/getClientById/${id}`, {
+        const response = await axios.get(`http://localhost:7070/api/consultant/getClientById/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
             'Content-Type': 'application/json', // Ensure the request is in JSON format
@@ -36,7 +37,7 @@ const InformationClient: React.FC = () => {
   }, [clientId]);
 
   if (!clientData) {
-    return <div>Loading...</div>; // Show loading state if data is not yet fetched
+    return <Loader/>; // Show loading state if data is not yet fetched
   }
 
   const { appointment, address, phoneNumbers, freezer, weeklyBudget, fullName, note, language, clients } = clientData;

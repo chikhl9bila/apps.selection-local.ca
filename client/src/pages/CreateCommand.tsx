@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useProductContext } from '../contexts/ProductContext';
 import LivraisonButtons from '../components/CreateCommand/LivraisonButtons';
 import ListofProducts from '../components/CreateCommand/ListofProducts';
 import SummaryTable from '../components/CreateCommand/SummaryTable';
@@ -25,7 +24,7 @@ interface Title {
 }
 
 const CreateCommande: React.FC = () => {
-  const { updateNombreOfLivraison } = useProductContext();
+  
   const [selectedCategory, setSelectedCategory] = useState<string>('BOEUF');
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(true);
   const [isFraisMentionVisible, setIsFraisMentionVisible] = useState<boolean>(true);
@@ -130,6 +129,7 @@ const CreateCommande: React.FC = () => {
       
       {selectedCategory === 'FIN' && (
         <>
+        
           <ResumeBon />
           <ButtonDivider onClick={toggleInformationClient} title="Information du Client" />
           {isInfoVisible && <InformationClient />}
@@ -141,6 +141,7 @@ const CreateCommande: React.FC = () => {
           {isPaymentVisible && <PaymentComponent />}
           <ButtonDivider onClick={toggleFormulaire} title="Énoncé des droits de résolution du consommateur" />
           {isFormulaire && <Formulaire />}
+
         </>
       )}
     </div>
