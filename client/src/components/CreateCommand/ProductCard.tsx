@@ -19,7 +19,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { updateProduct } = useProductContext();
+  const { updateProduct, nombreOfLivraison } = useProductContext();
 
   if (!product) {
     return <div>Product not found</div>; // Simple fallback
@@ -32,13 +32,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     updateProduct(product.id, { quantities: newQuantities });
   };
 
-  // Calculate the total price for basic quantities
+  // Calculate the total price for basic quantities up to nombreOfLivraison
   const basicTotalPrice = product.basicQuantities
-    ? product.basicQuantities.reduce((total, quantity) => total + quantity * product.price, 0)
+    ? product.basicQuantities.slice(0, nombreOfLivraison).reduce((total, quantity) => total + quantity * product.price, 0)
     : 0;
 
-  // Calculate the total price for current quantities
-  const totalPrice = product.quantities.reduce((total, quantity) => total + quantity * product.price, 0);
+  // Calculate the total price for current quantities up to nombreOfLivraison
+  const totalPrice = product.quantities.slice(0, nombreOfLivraison).reduce((total, quantity) => total + quantity * product.price, 0);
 
   // Calculate the difference
   const priceDifference = totalPrice - basicTotalPrice;
@@ -73,7 +73,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             Quantity per Delivery:
           </label>
           <div className="flex flex-row justify-center space-x-2 mt-2">
-            {product.quantities.map((quantity, index) => (
+            {product.quantities.slice(0, nombreOfLivraison).map((quantity, index) => (
               <div key={index} className="relative flex items-center space-x-2">
                 <input
                   type="number"
