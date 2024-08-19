@@ -24,6 +24,7 @@ interface Client {
   address: Address;
   appointment: Appointment;
   beenConsulted: boolean;
+  commandId: string;
 }
 
 const GetAllClients: React.FC = () => {
@@ -42,7 +43,7 @@ const GetAllClients: React.FC = () => {
         });
 
         setClients(response.data.clients);
-      } catch (error:any) {
+      } catch (error: any) {
         const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
         toast.error(errorMessage, {
           position: toast.POSITION.TOP_RIGHT,
@@ -56,6 +57,9 @@ const GetAllClients: React.FC = () => {
     fetchClients();
   }, [navigate]);
 
+  const handleViewCommand = (commandId: string) => {
+    navigate(`/commandInfo/${commandId}`);
+  };
   const handleConsult = (clientId: string) => {
     navigate(`/createCommand/${clientId}`);
   };
@@ -91,17 +95,29 @@ const GetAllClients: React.FC = () => {
                   {new Date(client.appointment.date).toLocaleDateString()} - {client.appointment.time}
                 </td>
                 <td className="py-2 px-4 border-b space-x-2">
-                  {!client.beenConsulted && (
+                  {!client.beenConsulted && (<>
+
                     <button
                       onClick={() => handleConsult(client._id)}
-                      className="bg-blue-500 text-white py-1 px-3 rounded"
+                      className="bg-red-500 text-white py-1 px-3 rounded"
                     >
                       Consult
+                    </button>
+
+
+                  </>
+
+                  )}
+                  {client.beenConsulted && (
+                    <button
+                      onClick={() => handleViewCommand(client.commandId)}
+                      className="bg-green-500 text-white py-1 px-3 rounded" >
+                      View Command
                     </button>
                   )}
                   <button
                     onClick={() => handleViewProfile(client._id)}
-                    className="bg-green-500 text-white py-1 px-3 rounded"
+                    className="bg-blue-500 text-white py-1 px-3 rounded"
                   >
                     View Profile
                   </button>

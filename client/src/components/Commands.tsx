@@ -46,7 +46,7 @@ const Commands: React.FC = () => {
     }, []);
 
     const handleViewClient = (clientId: string) => {
-        navigate(`/clientInfo/${clientId}`);
+        navigate(`/client/${clientId}`);
     };
 
     const handleViewCommand = (commandId: string) => {
