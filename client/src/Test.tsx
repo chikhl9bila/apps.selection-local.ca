@@ -8,7 +8,7 @@ const generatePDF = (): Promise<string> => {
     console.log("hhhh")
     const doc = new jsPDF();
 
-    doc.text('Hello world!', 10, 10);
+    doc.text('salam mohcine ', 10, 10);
     
 
     const pdfData = doc.output('datauristring'); // Base64-encoded PDF
@@ -21,9 +21,8 @@ const uploadPDF = async (pdfBase64: string) => {
   const token = localStorage.getItem('token');
 
   try {
-    console.log("hele")
     await axios.post('http://localhost:7070/api/consultant/sendInvoiceToClient', 
-      { pdf: pdfBase64 , email :"ech.chaaraouiamine@gmail.com",userName : "echcho"}, 
+      { pdf: pdfBase64 , email :"mohcintahimi@gmail.com",userName : "echcho"}, 
       {
         headers: {
           'Content-Type': 'application/json',
