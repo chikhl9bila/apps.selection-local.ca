@@ -178,7 +178,7 @@ const CreateCommande: React.FC = () => {
     />
     {isFormulaire && <FormResilation />}
     {/* PDF Generation Button */}
-    <div className="my-4 px-6">
+    <div className="my-7 px-6">
             <ReactToPrint
               trigger={() => <button className="btn btn-primary">Generate PDF</button>}
               content={() => printRef.current}
@@ -186,8 +186,9 @@ const CreateCommande: React.FC = () => {
           </div>
 
           {/* PDF Printable Content */}
-          <div style={{ display: 'none' }}>
+          <div className='py-4' style={{ display: 'none' }}>
             <div ref={printRef}>
+
               <PdfPrintableContent />
             </div>
           </div>
