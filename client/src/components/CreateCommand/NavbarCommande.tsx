@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
-
 interface Tab {
   name: string;
   href: string;
@@ -55,7 +54,7 @@ const NavbarCommande: React.FC<NavbarCommandeProps> = ({ onCategoryChange }) => 
           ))}
         </select>
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden sm:block sticky top-0 z-10 bg-white shadow">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex" aria-label="Tabs">
             {tabs.map((tab) => (
