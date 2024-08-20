@@ -4,7 +4,9 @@ const Command = require("./../models/commandModel");
 const jwt = require('jsonwebtoken');
 const MetaData = require("./../models/dbMetaData")
 require("dotenv").config();
-
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
 
 
@@ -226,6 +228,71 @@ const getAllCommands = async (req, res) => {
     }
 };
 
+const sendInvoiceToClient = async (req, res) => {
+    try {
+        const pdfBase64 = req.body.pdf;
+        const email = req.body.email;
+        const userName = req.body.userName;
+
+        if (pdfBase64) {
+            // Decode base64 string to binary
+            const pdfBuffer = Buffer.from(pdfBase64, 'base64');
+            // Write the file to a temporary location
+            const filePath = path.join(__dirname, Date.now() + 'temp.pdf');
+            fs.writeFileSync(filePath, pdfBuffer);
+
+            // Configure Nodemailer
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.GOOGLE_EMAIL,
+                    pass: process.env.GOOGLE_EMAIL_PASS,
+                },
+            });
+
+            const mailOptions = {
+                from: 'Selectionlocal05@gmail.com',
+                to: email,
+                subject: 'Selection Local Invoice',
+                html: `
+                    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                        <h2 style="color: #4CAF50; text-align: center; margin-bottom: 20px;">Hello ${userName},</h2>
+                        <p style="font-size: 16px; line-height: 1.5;">We hope you are doing well. Attached is your invoice. Thank you for your business!</p>
+                        <p style="font-size: 16px; line-height: 1.5;">If you have any questions, feel free to contact us at <a href="mailto:contact@selection-local.ca" style="color: #4CAF50; text-decoration: none;">contact@selection-local.ca</a>.</p>
+                        <p style="font-size: 16px; line-height: 1.5;">You can also visit our website: <a href="https://selection-local.ca" style="color: #4CAF50; text-decoration: none;">selection-local.ca</a></p>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <a href="https://selection-local.ca" style="display: inline-block; padding: 10px 20px; color: white; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Visit Our Website</a>
+                        </div>
+                        <hr style="margin-top: 30px; border: 0; border-top: 1px solid #eee;">
+                        <p style="font-size: 14px; color: #777; text-align: center; margin-top: 20px;">Best regards,</p>
+                        <p style="font-size: 14px; color: #333; text-align: center; font-weight: bold;">Selection Local Team</p>
+                    </div>
+                `,
+                attachments: [
+                    {
+                        filename: `invoice_${userName}.pdf`,
+                        path: filePath,
+                    },
+                ],
+            };
+
+            try {
+                await transporter.sendMail(mailOptions);
+                fs.unlinkSync(filePath); // Clean up the temporary file
+                res.status(200).send('Email sent successfully');
+            } catch (error) {
+                console.error('Error sending email:', error);
+                res.status(500).send('Error sending email');
+            }
+        } else {
+            res.status(400).send('No PDF data received');
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        res.status(500).send('An internal error occurred');
+    }
+}
 
 
-module.exports = { consulantLogin, addClient, getAllClients, createCommand, getClientById, getCommandById, getAllCommands, verifyConsultantIsLogin }; 
+
+module.exports = { consulantLogin, addClient, getAllClients, createCommand, getClientById, getCommandById, getAllCommands, verifyConsultantIsLogin, sendInvoiceToClient }; 
