@@ -239,6 +239,35 @@ const FormResilation = () => {
           </div>
         </form>
       </div>
+      <style jsx>{`
+        @media print {
+          body, html {
+            width: 210mm;
+            height: 297mm;
+          }
+          .container {
+            width: 100%;
+            max-width: 190mm;
+            margin: 0 auto;
+            padding: 0;
+          }
+          .bg-gray-100 {
+            background: white;
+          }
+          .shadow-lg {
+            box-shadow: none;
+          }
+          .border {
+            border: none;
+          }
+          .max-w-4xl {
+            max-width: 100%;
+          }
+          button {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 };

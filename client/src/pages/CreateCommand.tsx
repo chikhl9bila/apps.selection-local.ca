@@ -19,7 +19,6 @@ import FormResilation from '../components/CreateCommand/FormResilation';
 import PdfPrintableContent from '../components/CreateCommand/PdfPrintableContent';
 import OrderControl from '../components/CreateCommand/OrderControl';
 
-import ReactToPrint from 'react-to-print';
 
 import  '../components/CreateCommand/tailwind.output.css';
 
@@ -111,7 +110,6 @@ const CreateCommande: React.FC = () => {
 
   // Find the title object that matches the selected category
   const selectedTitle = titles.find(title => title.category === selectedCategory);
-  const printRef = useRef<HTMLDivElement | null>(null);
 
 
   return (
@@ -177,21 +175,6 @@ const CreateCommande: React.FC = () => {
       className={`my-3  hover:bg-gray-200 transition duration-300 ${isFormulaire ? 'bg-blue-100' : ''}`}
     />
     {isFormulaire && <FormResilation />}
-    {/* PDF Generation Button */}
-    <div className="my-7 px-6">
-            <ReactToPrint
-              trigger={() => <button className="btn btn-primary">Generate PDF</button>}
-              content={() => printRef.current}
-            />
-          </div>
-
-          {/* PDF Printable Content */}
-          <div className='py-4' style={{ display: 'none' }}>
-            <div ref={printRef}>
-
-              <PdfPrintableContent />
-            </div>
-          </div>
         <OrderControl></OrderControl>
   </>
 )}
