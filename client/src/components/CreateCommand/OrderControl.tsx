@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import PdfPrintableContent from './PdfPrintableContent';
+import axios from 'axios';
 
 const tabs = [
   { name: 'My Account', href: '#', current: true },
@@ -18,44 +19,72 @@ const OrderControl: React.FC = () => {
   const printRef = useRef<HTMLDivElement | null>(null);
   const [showContent, setShowContent] = useState(false);
 
+  const generatePDF = async (): Promise<string> => {
+    if (printRef.current) {
+      const canvas = await html2canvas(printRef.current, { scale: 1.75 }); // Increased scale for better quality
+      const imgData = canvas.toDataURL('image/jpeg', 0.85); // JPEG format with higher quality
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+
+      const imgWidth = pdf.internal.pageSize.getWidth(); // A4 width
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+      let heightLeft = imgHeight; // Remaining height to add to the PDF
+
+      // Add the image to the PDF until it fits
+      let position = 0;
+      const pageHeight = pdf.internal.pageSize.getHeight(); // A4 height
+
+      // Loop to add images to new pages
+      while (heightLeft > 0) {
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight; // Reduce remaining height
+        position -= pageHeight; // Move position up for next page
+
+        // Add a new page if there's more content
+        if (heightLeft > 0) {
+          pdf.addPage();
+        }
+      }
+
+      const pdfData = pdf.output('datauristring'); // Base64-encoded PDF
+      const base64String = pdfData.split(',')[1]; // Extract base64 part
+      return base64String;
+    }
+    throw new Error('Reference to printRef is not available');
+  };
+
+  const uploadPDF = async (pdfBase64: string) => {
+    const token = localStorage.getItem('token');
+
+    try {
+      await axios.post('http://localhost:7070/api/consultant/sendInvoiceToClient', 
+        { pdf: pdfBase64, email: "ech.chaaraouiamine@gmail.com", userName: "echcho" }, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        }
+      );
+      alert('PDF sent successfully!');
+    } catch (error) {
+      console.error('Error uploading PDF:', error);
+      alert('Failed to send PDF.');
+    }
+  };
+
   const handleDownloadPdf = async () => {
     setShowContent(true); // Show content for capturing
 
     // Wait for a short duration to allow components to render
     setTimeout(async () => {
-      if (printRef.current) {
-        const canvas = await html2canvas(printRef.current, { scale: 2 }); // Use a higher scale for better quality
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        });
-
-        const imgWidth = pdf.internal.pageSize.getWidth(); // A4 width
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
-        let heightLeft = imgHeight; // Remaining height to add to the PDF
-
-        // Add the image to the PDF until it fits
-        let position = 0;
-        const pageHeight = pdf.internal.pageSize.getHeight(); // A4 height
-
-        // Loop to add images to new pages
-        while (heightLeft > 0) {
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight; // Reduce remaining height
-          position -= pageHeight; // Move position up for next page
-
-          // Add a new page if there's more content
-          if (heightLeft > 0) {
-            pdf.addPage();
-          }
-        }
-
-        pdf.save('download.pdf');
-      }
-      setShowContent(false); // Hide content after download
-    }, 500); // Adjust the delay as needed
+      const pdfBase64 = await generatePDF(); // Generate PDF and get base64 string
+      await uploadPDF(pdfBase64); // Send the PDF via email
+      setShowContent(false); // Hide content after sending
+    }, 1000); // Adjust the delay as needed
   };
 
   return (
@@ -111,10 +140,16 @@ const OrderControl: React.FC = () => {
         >
           Download PDF
         </button>
+        <button
+          onClick={handleDownloadPdf}
+          className="mt-4 ml-4 bg-green-500 text-white py-2 px-4 rounded-lg shadow hover:bg-green-600"
+        >
+          Send PDF via Email
+        </button>
       </div>
       {/* PdfPrintableContent for PDF Generation */}
       {showContent && (
-        <div ref={printRef} >
+        <div ref={printRef}>
           <PdfPrintableContent />
         </div>
       )}
