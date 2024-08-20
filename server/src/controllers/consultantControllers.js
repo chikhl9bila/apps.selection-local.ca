@@ -255,13 +255,13 @@ const sendInvoiceToClient = async (req, res) => {
                 to: email,
                 subject: 'Selection Local Invoice',
                 html: `
-                    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
-                        <h2 style="color: #4CAF50; text-align: center; margin-bottom: 20px;">Hello ${userName},</h2>
+                    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #fdf2f2;">
+                        <h2 style="color: #d32f2f; text-align: center; margin-bottom: 20px;">Hello ${userName},</h2>
                         <p style="font-size: 16px; line-height: 1.5;">We hope you are doing well. Attached is your invoice. Thank you for your business!</p>
-                        <p style="font-size: 16px; line-height: 1.5;">If you have any questions, feel free to contact us at <a href="mailto:contact@selection-local.ca" style="color: #4CAF50; text-decoration: none;">contact@selection-local.ca</a>.</p>
-                        <p style="font-size: 16px; line-height: 1.5;">You can also visit our website: <a href="https://selection-local.ca" style="color: #4CAF50; text-decoration: none;">selection-local.ca</a></p>
+                        <p style="font-size: 16px; line-height: 1.5;">If you have any questions, feel free to contact us at <a href="mailto:contact@selection-local.ca" style="color: #d32f2f; text-decoration: none;">contact@selection-local.ca</a>.</p>
+                        <p style="font-size: 16px; line-height: 1.5;">You can also visit our website: <a href="https://selection-local.ca" style="color: #d32f2f; text-decoration: none;">selection-local.ca</a></p>
                         <div style="text-align: center; margin-top: 30px;">
-                            <a href="https://selection-local.ca" style="display: inline-block; padding: 10px 20px; color: white; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Visit Our Website</a>
+                            <a href="https://selection-local.ca" style="display: inline-block; padding: 10px 20px; color: white; background-color: #d32f2f; border-radius: 5px; text-decoration: none;">Visit Our Website</a>
                         </div>
                         <hr style="margin-top: 30px; border: 0; border-top: 1px solid #eee;">
                         <p style="font-size: 14px; color: #777; text-align: center; margin-top: 20px;">Best regards,</p>
@@ -275,6 +275,7 @@ const sendInvoiceToClient = async (req, res) => {
                     },
                 ],
             };
+            
 
             try {
                 await transporter.sendMail(mailOptions);
