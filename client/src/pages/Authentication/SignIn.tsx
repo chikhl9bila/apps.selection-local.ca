@@ -17,7 +17,7 @@ const SignIn: React.FC = () => {
       if (token) {
         try {
           setLoading(true);
-          const response = await axios.post('/api/consultant/verifyConsultantIsLogin', {}, {
+          const response = await axios.post('http://localhost:7070/api/consultant/verifyConsultantIsLogin', {}, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -42,7 +42,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post('/api/consultant/login', { email, password });
+      const response = await axios.post('http://localhost:7070/api/consultant/login', { email, password });
       localStorage.setItem('token', response.data.token);
       navigate('/clients');
     } catch (error: any) {

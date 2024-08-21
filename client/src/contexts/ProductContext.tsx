@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Define the types for the Product and the context
+// Define the types for Product, Client, and related structures
 interface Product {
   id: number;
   name: string;
@@ -14,20 +14,72 @@ interface Product {
   basicQuantities: number[];
 }
 
+interface Appointment {
+  date: string;
+  time: string;
+}
+
+interface Address {
+  street: string;
+  city: string;
+  postalCode: string;
+}
+
+interface PhoneNumbers {
+  phone1: string;
+  phone2: string;
+}
+
+interface Freezer {
+  hasExtraFreezer: boolean;
+  currentState: string;
+  hasSpaceForExtraFreezer: boolean;
+}
+
+interface WeeklyBudget {
+  meat: number;
+}
+
+interface SubClient {
+  fullName: string;
+  _id: string;
+}
+
+interface Client {
+  _id?: string;
+  fullName?: string;
+  appointment?: Appointment;
+  address?: Address;
+  phoneNumbers?: PhoneNumbers;
+  freezer?: Freezer;
+  weeklyBudget?: WeeklyBudget;
+  note?: string;
+  language?: string;
+  clients?: SubClient[];
+  beenConsulted?: boolean;
+  commandId?: string | null;
+  consultantId?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
+}
+
 interface ProductContextType {
   products: Product[];
   nombreOfLivraison: number;
+  client: Client; // Client data in context
   updateProduct: (id: number, updates: Partial<Product>) => void;
   updateNombreOfLivraison: (newNombreOfLivraison: number) => void;
+  updateClient: (newClient: Partial<Client>) => void; // Function to update client
   getProductsByCategory: () => Record<string, Product[]>;
-  resetQuantitiesByCategory: (category: string) => void; // New function
-  resetToBasicQuantitiesByCategory: (category: string) => void; // New function
-
+  resetQuantitiesByCategory: (category: string) => void;
+  resetToBasicQuantitiesByCategory: (category: string) => void;
 }
 
-// Create a context with a default value of undefined
+// Create the ProductContext
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
+// Create the ProductProvider component
 interface ProductProviderProps {
   children: ReactNode;
 }
@@ -1535,7 +1587,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     },
     // Add more products as needed
   ]);
+
   const [nombreOfLivraison, setNombreOfLivraison] = useState<number>(4);
+  const [client, setClient] = useState<Client>({}); // Initialize with an empty object
 
   const updateProduct = (id: number, updates: Partial<Product>) => {
     setProducts((prevProducts) =>
@@ -1546,29 +1600,27 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   };
 
   const updateNombreOfLivraison = (newNombreOfLivraison: number) => {
-    // Clamp the value to be between 0 and 4
     const clampedValue = Math.max(0, Math.min(4, newNombreOfLivraison));
-
     setNombreOfLivraison(clampedValue);
 
     setProducts((prevProducts) =>
       prevProducts.map((product) => {
         const updatedQuantities = product.quantities.slice(0, clampedValue);
-
-        // If the clamped number of deliveries is greater, add more items
         while (updatedQuantities.length < clampedValue) {
-          updatedQuantities.push(0); // Add default value 0 for new deliveries
+          updatedQuantities.push(0);
         }
-
-        return {
-          ...product,
-          quantities: updatedQuantities,
-        };
+        return { ...product, quantities: updatedQuantities };
       })
     );
   };
 
-  // Group products by category
+  const updateClient = (newClient: Partial<Client>) => {
+    setClient((prevClient) => ({
+      ...prevClient,
+      ...newClient,
+    }));
+  };
+
   const getProductsByCategory = (): Record<string, Product[]> => {
     return products.reduce<Record<string, Product[]>>((acc, product) => {
       if (!acc[product.category]) {
@@ -1583,41 +1635,41 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.category === category
-          ? { 
-              ...product, 
+          ? {
+              ...product,
               quantities: product.quantities
-                .slice(0, nombreOfLivraison) // Only reset up to nombreOfLivraison
-                .map(() => 0) 
+                .slice(0, nombreOfLivraison)
+                .map(() => 0),
             }
           : product
       )
     );
   };
-  
 
   const resetToBasicQuantitiesByCategory = (category: string) => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.category === category
-          ? { 
-              ...product, 
+          ? {
+              ...product,
               quantities: [
-                ...product.basicQuantities.slice(0, nombreOfLivraison) // Only use basic quantities up to nombreOfLivraison
-              ]
+                ...product.basicQuantities.slice(0, nombreOfLivraison),
+              ],
             }
           : product
       )
     );
   };
-  
 
   return (
     <ProductContext.Provider
       value={{
         products,
-        updateProduct,
         nombreOfLivraison,
+        client, // Include client in the context
+        updateProduct,
         updateNombreOfLivraison,
+        updateClient, // Include the client update function in the context
         getProductsByCategory,
         resetQuantitiesByCategory,
         resetToBasicQuantitiesByCategory,
@@ -1628,7 +1680,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   );
 };
 
-// Custom hook to use the ProductContext
+// Create a custom hook to use the ProductContext
 export const useProductContext = (): ProductContextType => {
   const context = useContext(ProductContext);
   if (!context) {

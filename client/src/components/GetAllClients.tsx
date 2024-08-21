@@ -36,7 +36,7 @@ const GetAllClients: React.FC = () => {
     const fetchClients = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('/api/consultant/getallclients', {
+        const response = await axios.get('http://localhost:7070/api/consultant/getallclients', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

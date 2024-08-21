@@ -1,47 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Loader from '../../common/Loader';
-import axios from 'axios';
-import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
+import React from 'react';
+import { useProductContext } from '../../contexts/ProductContext';
+import '../CreateCommand/tailwind.output.css';
 
 const InformationClient: React.FC = () => {
-  const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
-  const [clientData, setClientData] = useState<any>(null);
+  const { client } = useProductContext(); // Access client data from the context
 
-  useEffect(() => {
-    // Fetch client data from the backend
-    const fetchClientData = async () => {
-      try {
-        // Retrieve the token from localStorage (or wherever it's stored)
-        const token = localStorage.getItem('token'); // Replace 'token' with your actual token key
 
-        if (!token) {
-          throw new Error('No token available');
-        }
 
-        const response = await axios.get(`http://localhost:7070/api/consultant/getClientById/${clientId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-            'Content-Type': 'application/json', // Ensure the request is in JSON format
-          },
-        });
-
-        const data = response.data; // Extract the data from the response
-        console.log(data); // Log the fetched data
-        setClientData(data); // Store the data in state
-      } catch (error) {
-        console.error('Error fetching client data:', error);
-      }
-    };
-
-    fetchClientData();
-  }, [clientId]);
-
-  if (!clientData) {
-    return <Loader/>; // Show loading state if data is not yet fetched
-  }
-
-  const { appointment, address, phoneNumbers, freezer, weeklyBudget, fullName, note, language, clients } = clientData;
+  const { appointment, address, phoneNumbers, freezer, weeklyBudget, fullName, note, language, clients } = client;
 
   return (
     <div className="px-6 sm:px-8 lg:px-12 mx-auto max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
