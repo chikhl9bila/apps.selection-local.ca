@@ -25,7 +25,7 @@ const Commands: React.FC = () => {
         const fetchCommands = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:7070/api/consultant/getallcommands', {
+                const response = await axios.get('/api/consultant/getallcommands', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },

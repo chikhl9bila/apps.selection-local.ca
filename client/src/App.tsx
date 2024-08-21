@@ -7,7 +7,6 @@ import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './Dashboard';
 import CreateCommand from './pages/CreateCommand';
-import Test from './Test';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -65,7 +64,6 @@ function App() {
       <Routes>
         <Route path="/SignIn" element={<><PageTitle title="Signin SelectionLocal" /><SignIn /></>} />
         <Route path="/CreateCommand/:clientId" element={<> <PageTitle title="Create Command" /> <CreateCommand /></>} />
-        <Route path="/test" element={<Test />} />
         <Route path="/*" element={<Dashboard />} />
 
 

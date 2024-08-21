@@ -10,6 +10,7 @@ const connectDB = () => {
                 resolve();
             })
             .catch((error) => {
+                console.log(error);
                 reject();  
             });
     });
