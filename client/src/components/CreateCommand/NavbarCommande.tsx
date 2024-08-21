@@ -54,7 +54,7 @@ const NavbarCommande: React.FC<NavbarCommandeProps> = ({ onCategoryChange }) => 
           ))}
         </select>
       </div>
-      <div className="hidden sm:block sticky top-0 z-10 bg-white shadow">
+      <div className="hidden sm:block fixed top-0 left-0 right-0 z-10 bg-white shadow">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex" aria-label="Tabs">
             {tabs.map((tab) => (

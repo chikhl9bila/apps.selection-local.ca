@@ -33,7 +33,7 @@ export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
   );
 
   return (
-    <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 bg-gray-50 rounded-xl shadow-lg">
+    <div className="px-2 py-2 sm:px-6 sm:py-6 lg:px-8 lg:py-8 bg-white rounded-xl shadow-lg">
       <div className="sm:flex sm:items-center mb-6">
         <div className="sm:flex-auto">
           <h1 className="text-2xl sm:text-3xl font-bold leading-8 text-blue-900">{selectedCategory}</h1>
