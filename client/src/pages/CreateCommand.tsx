@@ -210,7 +210,7 @@ const CreateCommande: React.FC = () => {
                 className={`my-3 hover:bg-gray-200 transition duration-300 ${isFormulaire ? 'bg-blue-100' : ''}`}
               />
               {isFormulaire && <FormResilation />}
-              <OrderControl />
+              <OrderControl setIsLoading={setIsLoading} />
             </>
           )}
         </>

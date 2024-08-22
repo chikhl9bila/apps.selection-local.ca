@@ -68,9 +68,11 @@ interface ProductContextType {
   products: Product[];
   nombreOfLivraison: number;
   client: Client; // Client data in context
+  commandIsConfirmed: boolean; // New state for command confirmation
   updateProduct: (id: number, updates: Partial<Product>) => void;
   updateNombreOfLivraison: (newNombreOfLivraison: number) => void;
   updateClient: (newClient: Partial<Client>) => void; // Function to update client
+  updateCommandStatus: (status: boolean) => void; // Function to update command status
   getProductsByCategory: () => Record<string, Product[]>;
   resetQuantitiesByCategory: (category: string) => void;
   resetToBasicQuantitiesByCategory: (category: string) => void;
@@ -1590,6 +1592,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
 
   const [nombreOfLivraison, setNombreOfLivraison] = useState<number>(4);
   const [client, setClient] = useState<Client>({}); // Initialize with an empty object
+  const [commandIsConfirmed, setCommandIsConfirmed] = useState<boolean>(false); // New state
 
   const updateProduct = (id: number, updates: Partial<Product>) => {
     setProducts((prevProducts) =>
@@ -1660,6 +1663,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       )
     );
   };
+  const updateCommandStatus = (status: boolean) => {
+    setCommandIsConfirmed(status);
+  };
 
   return (
     <ProductContext.Provider
@@ -1670,6 +1676,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
         updateProduct,
         updateNombreOfLivraison,
         updateClient, // Include the client update function in the context
+        updateCommandStatus, // Include the command status update function in the context
         getProductsByCategory,
         resetQuantitiesByCategory,
         resetToBasicQuantitiesByCategory,
