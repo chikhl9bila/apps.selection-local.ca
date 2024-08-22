@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useProductContext } from '../../contexts/ProductContext';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -6,11 +6,11 @@ import PdfPrintableContent from './PdfPrintableContent';
 import axios from 'axios';
 
 // Tabs definition
-const tabs = [
-  { name: 'Confirm', href: '#', current: true },
-  { name: 'Download PDF', href: '#', current: false },
-  { name: 'Send PDF via Email', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
+const initialTabs = [
+  { name: 'Confirm', href: '#', current: true, disabled: false },
+  { name: 'Download PDF', href: '#', current: false, disabled: true },
+  { name: 'Send PDF via Email', href: '#', current: false, disabled: true },
+  { name: 'Billing', href: '#', current: false, disabled: true },
 ];
 
 function classNames(...classes: (string | undefined)[]): string {
@@ -20,10 +20,26 @@ function classNames(...classes: (string | undefined)[]): string {
 const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setIsLoading }) => {
   const printRef = useRef<HTMLDivElement | null>(null);
   const [showContent, setShowContent] = useState(false);
-  const [currentTab, setCurrentTab] = useState(tabs[0].name); // Track the current tab
+  const [currentTab, setCurrentTab] = useState(initialTabs[0].name); // Track the current tab
+  const [tabs, setTabs] = useState(initialTabs); // Local state for tabs
 
-  // Get the updateCommandStatus function from context
-  const { updateCommandStatus } = useProductContext();
+  // Get the updateCommandStatus function and commandIsConfirmed from context
+  const { updateCommandStatus, commandIsConfirmed } = useProductContext();
+
+  useEffect(() => {
+    if (commandIsConfirmed) {
+      console.log("command Is confirmed Congratigulation")
+      // Only update the disabled state of tabs if commandIsConfirmed is true
+      setTabs((prevTabs) =>
+        prevTabs.map((tab) => {
+          if (tab.name !== 'Confirm') {
+            return { ...tab, disabled: false }; // Enable tabs
+          }
+          return tab; // Keep the Confirm tab unchanged
+        })
+      );
+    }
+  }, [commandIsConfirmed]);
 
   const handleTabClick = async (tabName: string) => {
     setShowContent(true); // Show content for capturing
@@ -33,7 +49,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
       updateCommandStatus(true); // Confirm the command
       alert('Command has been confirmed!'); // Notify user
       setShowContent(false); // Hide content after confirming
-    } else if (tabName === 'Download PDF') {
+    } else if (tabName === 'Download PDF' && commandIsConfirmed) {
       setTimeout(async () => {
         const pdfBase64 = await generatePDF(); // Generate PDF and get base64 string
         // Automatically download the PDF
@@ -43,7 +59,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
         link.click();
         setShowContent(false); // Hide content after downloading
       }, 1000);
-    } else if (tabName === 'Send PDF via Email') {
+    } else if (tabName === 'Send PDF via Email' && commandIsConfirmed) {
       setTimeout(async () => {
         const pdfBase64 = await generatePDF(); // Generate PDF and get base64 string
         await uploadPDF(pdfBase64); // Send the PDF via email
@@ -55,8 +71,12 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
 
     // Update the current tab state
     setCurrentTab(tabName);
-    tabs.forEach(t => t.current = false);
-    tabs.find(t => t.name === tabName)!.current = true; // Set the clicked tab as current
+    setTabs((prevTabs) =>
+      prevTabs.map((tab) => ({
+        ...tab,
+        current: tab.name === tabName,
+      }))
+    ); // Set the clicked tab as current
   };
 
   const generatePDF = async (): Promise<string> => {
@@ -123,12 +143,18 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
               key={tab.name}
               className={classNames(
                 tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
+                tab.disabled ? 'opacity-50 cursor-not-allowed' : '',
                 tabIdx === 0 ? 'rounded-l-lg' : '',
                 tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
                 'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10'
               )}
               aria-current={tab.current ? 'page' : undefined}
-              onClick={() => handleTabClick(tab.name)} // Handle tab click
+              onClick={() => {
+                if (!tab.disabled) {
+                  handleTabClick(tab.name); // Handle tab click only if not disabled
+                }
+              }}
+              disabled={tab.disabled} // Set button as disabled
             >
               <span>{tab.name}</span>
               <span

@@ -1673,6 +1673,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
         products,
         nombreOfLivraison,
         client, // Include client in the context
+        commandIsConfirmed,
         updateProduct,
         updateNombreOfLivraison,
         updateClient, // Include the client update function in the context
