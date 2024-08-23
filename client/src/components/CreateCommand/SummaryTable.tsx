@@ -20,7 +20,6 @@ export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
   const { products, nombreOfLivraison } = useProductContext();
 
   const calculateTotalPrice = (quantities: number[], price: number): number => {
-    // Only calculate up to nombreOfLivraison
     const limitedQuantities = quantities.slice(0, nombreOfLivraison);
     return limitedQuantities.reduce((total, quantity) => total + quantity * price, 0);
   };
@@ -43,13 +42,13 @@ export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
         <table className="min-w-full max-w-full divide-y divide-gray-200 table-auto">
           <thead className="border-b-2 border-blue-300 bg-blue-100 text-gray-900 rounded-t-lg">
             <tr>
-              <th className="py-2 pl-4 pr-2 text-left text-xs sm:text-sm lg:text-base font-semibold sm:pl-6">Description</th>
-              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Format</th>
-              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Prix boîte</th>
-              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Qté base</th>
-              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Qté</th>
+              <th className="py-2 pl-4 pr-2 text-left text-xs sm:text-sm lg:text-base font-semibold sm:pl-6 border-r">Description</th>
+              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold border-r">Format</th>
+              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold border-r">Prix boîte</th>
+              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold border-r">Qté base</th>
+              <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold border-r">Qté</th>
               {[...Array(4).keys()].map((i) => (
-                <th key={i} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Liv {i + 1}</th>
+                <th key={i} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold border-r">Liv {i + 1}</th>
               ))}
               <th className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base font-semibold">Crédits / Ajouts</th>
             </tr>
@@ -68,19 +67,19 @@ export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
 
               return (
                 <tr key={product.id} className="hover:bg-gray-100 transition-colors">
-                  <td className="py-2 pl-4 pr-2 text-xs sm:text-sm lg:text-base font-medium text-gray-900 sm:pl-6">{product.name}</td>
-                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">{product.format}</td>
-                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">{product.price.toFixed(2)}$</td>
-                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">{product.basicQuantities.slice(0, nombreOfLivraison).reduce((sum, q) => sum + q, 0)}</td>
-                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">{product.quantities.slice(0, nombreOfLivraison).reduce((sum, q) => sum + q, 0)}</td>
+                  <td className="py-2 pl-4 pr-2 text-xs sm:text-sm lg:text-base font-medium text-gray-900 sm:pl-6 border-b border-gray-300">{product.name}</td>
+                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.format}</td>
+                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.price.toFixed(2)}$</td>
+                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.basicQuantities.slice(0, nombreOfLivraison).reduce((sum, q) => sum + q, 0)}</td>
+                  <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.quantities.slice(0, nombreOfLivraison).reduce((sum, q) => sum + q, 0)}</td>
                   {product.quantities.slice(0, nombreOfLivraison).map((quantity, index) => (
-                    <td key={index} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">{quantity}</td>
+                    <td key={index} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{quantity}</td>
                   ))}
                   {[...Array(4 - Math.min(nombreOfLivraison, product.quantities.length))].map((_, index) => (
-                    <td key={index} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500">-</td>
+                    <td key={index} className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">-</td>
                   ))}
                   <td
-                    className={`px-2 py-2 text-right text-xs sm:text-sm lg:text-base ${difference < 0 ? 'text-red-500' : 'text-green-500'}`}
+                    className={`px-2 py-2 text-right text-xs sm:text-sm lg:text-base ${difference < 0 ? 'text-red-500' : 'text-green-500'} border-b border-gray-300`}
                   >
                     {difference.toFixed(2)}$
                   </td>

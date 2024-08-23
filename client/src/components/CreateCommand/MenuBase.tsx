@@ -21,7 +21,7 @@ const MenuBase: React.FC = () => {
   return (
     <ul role="list" className="space-y-1">
       {items.map((item) => (
-        <li key={item.id} className="overflow-hidden rounded-md bg-white shadow">
+        <li key={item.id} className="overflow-hidden rounded-md bg-white shadow ">
           {/* Passing the category to SummaryTable as selectedCategory */}
           <SummaryTable selectedCategory={item.category} />
         </li>
