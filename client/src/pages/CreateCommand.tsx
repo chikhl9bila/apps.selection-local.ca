@@ -15,6 +15,7 @@ import ResetButton from '../components/CreateCommand/ResetButton';
 import ResetToBasicButton from '../components/CreateCommand/ResetToBasicButtonProps';
 import FormResilation from '../components/CreateCommand/FormResilation';
 import OrderControl from '../components/CreateCommand/OrderControl';
+import FoodServiceSummary from '../components/CreateCommand/FoodServiceSummary';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -203,6 +204,8 @@ const CreateCommande: React.FC = () => {
                 className={`my-3 hover:bg-gray-200 transition duration-300 ${isPaymentVisible ? 'bg-blue-100' : ''}`}
               />
               {isPaymentVisible && <PaymentComponent />}
+              <FoodServiceSummary/>
+
 
               <ButtonDivider
                 onClick={toggleFormulaire}
