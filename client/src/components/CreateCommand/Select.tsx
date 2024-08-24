@@ -24,7 +24,7 @@ export default function Select() {
     return products.reduce((total, product) => {
       return total + product.quantities.reduce((sum: number, qty: number, index: number) => {
         if (index < nombreOfLivraison) {
-          return sum + qty * product.price;
+          return sum + qty * product.price ;
         }
         return sum;
       }, 0);
@@ -32,7 +32,7 @@ export default function Select() {
   };
 
   const calculateFinancingOptions = () => {
-    const total = calculateTotalForDelivery();
+    const total = calculateTotalForDelivery() + calculateTotalForDelivery()*0.56;
     return {
       weeklyTotal: (total / 52).toFixed(2),
       biWeeklyTotal: (total / 26).toFixed(2),

@@ -48,7 +48,7 @@ interface SubClient {
 interface Client {
   _id?: string;
   fullName?: string;
-  email? : string ; 
+  email?: string;
   appointment?: Appointment;
   address?: Address;
   phoneNumbers?: PhoneNumbers;
@@ -78,6 +78,8 @@ interface ProductContextType {
   getProductsByCategory: () => Record<string, Product[]>;
   resetQuantitiesByCategory: (category: string) => void;
   resetToBasicQuantitiesByCategory: (category: string) => void;
+  calculateTotalFoodService: () => { totalService: number; maintenanceExpenses: number ; totalProductsPrice: number ;};
+
 }
 
 // Create the ProductContext
@@ -1668,6 +1670,23 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   const updateCommandStatus = (status: boolean) => {
     setCommandIsConfirmed(status);
   };
+  const calculateTotalFoodService = (): { 
+    totalService: number; 
+    maintenanceExpenses: number; 
+    totalProductsPrice: number 
+  } => {
+    const totalProductsPrice = products.reduce((total, product) => {
+      const applicableQuantities = product.quantities.slice(0, nombreOfLivraison);
+      const productTotal = applicableQuantities.reduce((sum, q) => sum + q, 0) * product.price;
+      return total + productTotal;
+    }, 0);
+  
+    const maintenanceExpenses = totalProductsPrice * 0.56;
+    const totalService = totalProductsPrice + maintenanceExpenses;
+  
+    return { totalService, maintenanceExpenses, totalProductsPrice };
+  };
+  
 
   return (
     <ProductContext.Provider
@@ -1683,6 +1702,8 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
         getProductsByCategory,
         resetQuantitiesByCategory,
         resetToBasicQuantitiesByCategory,
+        calculateTotalFoodService,  // Add this line
+
       }}
     >
       {children}

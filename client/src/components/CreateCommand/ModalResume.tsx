@@ -32,13 +32,13 @@ export default function ModalResume() {
     return { totalQuantity, totalPrice };
   });
 
-  const totalCredit = totalPerLivraison.reduce((acc, livraison) => acc + livraison.totalPrice, 0);
+  const totalCredit = totalPerLivraison.reduce((acc, livraison) => acc + livraison.totalPrice + livraison.totalPrice*0.56, 0);
   const totalAjout = totalPerLivraison.reduce((acc, livraison, index) => {
-    const basicTotalPrice = products.reduce((acc, product) => acc + product.basicQuantities[index] * product.price, 0);
+    const basicTotalPrice = products.reduce((acc, product) => acc + product.basicQuantities[index] * product.price + product.basicQuantities[index] * product.price*0.56 , 0);
     return acc + (livraison.totalPrice - basicTotalPrice);
   }, 0);
 
-  const dynamicTotal = totalPerLivraison.reduce((acc, livraison) => acc + livraison.totalPrice, 0);
+  const dynamicTotal = totalPerLivraison.reduce((acc, livraison) => acc + livraison.totalPrice + livraison.totalPrice*0.56, 0);
   const pi3Values: string[] = ["3 pi³", "3 pi³"];
 
   return (

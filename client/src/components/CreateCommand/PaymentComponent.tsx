@@ -65,7 +65,7 @@ const PaymentComponent = () => {
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Livraison {index + 1}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {products.reduce((sum, product) => sum + product.quantities[index] * product.price, 0).toFixed(2)}$
+                        {products.reduce((sum, product) => sum + product.quantities[index] * product.price + product.quantities[index] * product.price*0.56, 0).toFixed(2)}$
                       </td>
                     </tr>
                   ))}
