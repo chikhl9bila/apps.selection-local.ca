@@ -9,7 +9,7 @@ const commandSchema = new Schema({
     },
     date: {
         type: Date,
-        required: true
+        default: Date.now
     },
     clientName: {
         type: String,
@@ -25,7 +25,8 @@ const commandSchema = new Schema({
         required: true
     },
     note: {
-        type: String
+        type: String,
+        default:""
     },
     object: {
         type: Schema.Types.Mixed 

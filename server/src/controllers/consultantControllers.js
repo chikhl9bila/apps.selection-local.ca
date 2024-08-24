@@ -139,63 +139,58 @@ const getAllClients = async (req, res) => {
     }
 };
 
+
 const createCommand = async (req, res) => {
-    const { date, clientId, note, object } = req.body;
+    const { clientId, object } = req.body;
+    try {
+        let metaData = await MetaData.findOne();
 
-    let metaData = await MetaData.findOne();
+        // If no record exists, create one
+        if (!metaData) {
+            metaData = new MetaData({
+                lastClientId: 1,
+                lastCommandId: 1,
+            });
+            await metaData.save();
+        }
 
-    // If no record exists, create one
-    if (!metaData) {
-        metaData = new MetaData({
-            lastClientId: 1,
-            lastCommandId: 1,
+        const orderNumber = metaData.lastCommandId;
+        metaData.lastCommandId++;
+
+        await metaData.save(); // Ensure metaData is saved
+
+        // Check if the client exists
+        const client = await Client.findById(clientId);
+        if (!client) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        // Create the new command
+        const newCommand = new Command({
+            orderNumber,
+            consultantId: req.consultant._id, // Add the consultant ID from the authenticated user
+            clientId,
+            object,
+            clientName: client.fullName
         });
-        await metaData.save();
+
+        // Save the command
+        const savedCommand = await newCommand.save();
+
+        // Update the client's `beenConsulted` field and `commandId`
+        client.beenConsulted = true;
+        client.commandId = savedCommand._id;
+        client.consultantId = req.consultant._id;
+        await client.save();
+
+        req.consultant.clients.push(client._id);
+        await req.consultant.save();
+
+        // Return the created command
+        return res.status(201).json({ savedCommand });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
     }
-
-    const orderNumber = metaData.lastCommandId;
-    metaData.lastCommandId++;
-    metaData.save()
-        .then(async () => {
-            try {
-                // Check if the client exists
-                const client = await Client.findById(clientId);
-                if (!client) {
-                    return res.status(404).json({ message: 'Client not found' });
-                }
-
-                // Create the new command
-                const newCommand = new Command({
-                    orderNumber,
-                    date,
-                    consultantId: req.consultant._id,  // Add the consultant ID from the authenticated user
-                    clientId,
-                    note,
-                    object,
-                    clientName: client.fullName
-                });
-
-                // Save the command
-                const savedCommand = await newCommand.save();
-
-                // Update the client's `modified` field and `commandId`
-                client.beenConsulted = true;
-                client.commandId = savedCommand._id;
-                client.consultantId = req.consultant._id;
-                await client.save();
-
-                req.consultant.clients.push(client._id);
-                await req.consultant.save();
-
-                // Return the created command
-                res.status(201).json({ savedCommand });
-            } catch (error) {
-                res.status(500).json({ message: 'Server error', error: error.message });
-            }
-        }).catch(() => {
-            res.status(500).json({ message: 'Server error', error: error.message });
-        })
-    res.status(500).json({ message: 'Server error', error: error.message });
 };
 
 const getCommandById = async (req, res) => {
@@ -275,21 +270,19 @@ const sendInvoiceToClient = async (req, res) => {
                     },
                 ],
             };
-            
+
 
             try {
                 await transporter.sendMail(mailOptions);
                 fs.unlinkSync(filePath); // Clean up the temporary file
                 res.status(200).send('Email sent successfully');
             } catch (error) {
-                console.error('Error sending email:', error);
                 res.status(500).send('Error sending email');
             }
         } else {
             res.status(400).send('No PDF data received');
         }
     } catch (error) {
-        console.error('An error occurred:', error);
         res.status(500).send('An internal error occurred');
     }
 }

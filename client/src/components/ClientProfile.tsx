@@ -9,6 +9,7 @@ interface Client {
     date: string;
     time: string;
   };
+  email: string;
   note: string;
   language: string;
   clients: { fullName: string }[];
@@ -69,6 +70,10 @@ const ClientProfile: React.FC = () => {
               <div className="flex justify-between border-b border-gray-200 pb-2">
                 <span className="font-medium text-gray-700">Full Name:</span>
                 <span className="text-gray-600">{client.fullName}</span>
+              </div>
+              <div className="flex justify-between border-b border-gray-200 pb-2">
+                <span className="font-medium text-gray-700">email:</span>
+                <span className="text-gray-600">{client.email}</span>
               </div>
               <div className="flex justify-between border-b border-gray-200 pb-2">
                 <span className="font-medium text-gray-700">Appointment Date:</span>
