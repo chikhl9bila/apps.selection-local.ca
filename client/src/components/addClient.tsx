@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 interface FormData {
     fullName: string;
+    email: string;
     appointmentDate: string;
     appointmentTime: string;
     note: string;
@@ -28,6 +29,7 @@ interface FormData {
 const AddClient: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
+        email: '',
         appointmentDate: '',
         appointmentTime: '',
         note: '',
@@ -62,6 +64,7 @@ const AddClient: React.FC = () => {
         try {
             let DataToSend = {
                 fullName: formData.fullName,
+                email: formData.email,
                 appointment: {
                     date: formData.appointmentDate,
                     time: formData.appointmentTime
@@ -97,8 +100,8 @@ const AddClient: React.FC = () => {
             toast.success("Client created successfully!", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
-              });
-            
+            });
+
             navigate('/Clients');
         } catch (error: any) {
             setLoading(false);
@@ -129,6 +132,16 @@ const AddClient: React.FC = () => {
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                             required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                         />
                     </div>
                     <div>
@@ -188,17 +201,7 @@ const AddClient: React.FC = () => {
                             <option value="Anglais">Anglais</option>
                         </select>
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium">Meat Budget weekly</label>
-                        <input
-                            type="number"
-                            name="meatBudget"
-                            value={formData.meatBudget}
-                            onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                            required
-                        />
-                    </div>
+
                 </div>
                 {/* Right Column */}
                 <div className="space-y-4">
@@ -290,7 +293,17 @@ const AddClient: React.FC = () => {
                             <option value="Full">Full</option>
                         </select>
                     </div>
-
+                    <div>
+                        <label className="block text-sm font-medium">Meat Budget weekly</label>
+                        <input
+                            type="number"
+                            name="meatBudget"
+                            value={formData.meatBudget}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
 
                 </div>
                 <button

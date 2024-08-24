@@ -48,6 +48,7 @@ interface SubClient {
 interface Client {
   _id?: string;
   fullName?: string;
+  email? : string ; 
   appointment?: Appointment;
   address?: Address;
   phoneNumbers?: PhoneNumbers;
@@ -59,6 +60,7 @@ interface Client {
   beenConsulted?: boolean;
   commandId?: string | null;
   consultantId?: string | null;
+  signature?: string | null;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;

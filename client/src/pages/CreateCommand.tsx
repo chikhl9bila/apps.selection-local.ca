@@ -153,6 +153,10 @@ const CreateCommande: React.FC = () => {
           <NavbarCommande onCategoryChange={handleCategoryChange} />
           {selectedCategory !== 'FIN' && selectedTitle && (
             <>
+            <br/>
+            <br/>
+        
+            <br/>
               <div className="flex justify-between items-center my-4 px-6">
                 <LivraisonButtons />
                 <div className="flex space-x-4">

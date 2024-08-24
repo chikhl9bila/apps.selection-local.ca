@@ -4,8 +4,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import PdfPrintableContent from './PdfPrintableContent';
 import axios from 'axios';
+import EmailSignatureModal from './EmailSignatureModal';
 
-// Tabs definition
 const initialTabs = [
   { name: 'Confirm', href: '#', current: true, disabled: false },
   { name: 'Download PDF', href: '#', current: false, disabled: true },
@@ -20,63 +20,66 @@ function classNames(...classes: (string | undefined)[]): string {
 const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setIsLoading }) => {
   const printRef = useRef<HTMLDivElement | null>(null);
   const [showContent, setShowContent] = useState(false);
-  const [currentTab, setCurrentTab] = useState(initialTabs[0].name); // Track the current tab
-  const [tabs, setTabs] = useState(initialTabs); // Local state for tabs
+  const [currentTab, setCurrentTab] = useState(initialTabs[0].name);
+  const [tabs, setTabs] = useState(initialTabs);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // Get the updateCommandStatus function and commandIsConfirmed from context
-  const { updateCommandStatus, commandIsConfirmed } = useProductContext();
+  const { updateCommandStatus, commandIsConfirmed, client: contextClient } = useProductContext();
+
+  const [email, setEmail] = useState<string>(contextClient?.email || ''); // Initialize with contextClient
 
   useEffect(() => {
     if (commandIsConfirmed) {
-      console.log("command Is confirmed Congratigulation")
-      // Only update the disabled state of tabs if commandIsConfirmed is true
       setTabs((prevTabs) =>
         prevTabs.map((tab) => {
           if (tab.name !== 'Confirm') {
-            return { ...tab, disabled: false }; // Enable tabs
+            return { ...tab, disabled: false };
           }
-          return tab; // Keep the Confirm tab unchanged
+          return tab;
         })
       );
     }
   }, [commandIsConfirmed]);
 
+  useEffect(() => {
+    if (contextClient) {
+      setEmail(contextClient.email || ''); // Initialize email from context client
+    }
+  }, [contextClient]);
+
   const handleTabClick = async (tabName: string) => {
-    setShowContent(true); // Show content for capturing
+    setShowContent(true);
 
     if (tabName === 'Confirm') {
-      // Handle command confirmation
-      updateCommandStatus(true); // Confirm the command
-      alert('Command has been confirmed!'); // Notify user
-      setShowContent(false); // Hide content after confirming
+    
+      setModalIsOpen(true);
+
     } else if (tabName === 'Download PDF' && commandIsConfirmed) {
-      setTimeout(async () => {
-        const pdfBase64 = await generatePDF(); // Generate PDF and get base64 string
-        // Automatically download the PDF
-        const link = document.createElement('a');
-        link.href = `data:application/pdf;base64,${pdfBase64}`;
-        link.download = 'document.pdf'; // Specify the download file name
-        link.click();
-        setShowContent(false); // Hide content after downloading
-      }, 1000);
+
+      const pdfBase64 = await generatePDF();
+      const link = document.createElement('a');
+      link.href = `data:application/pdf;base64,${pdfBase64}`;
+      link.download = 'document.pdf';
+      link.click();
+      setShowContent(false);
+
     } else if (tabName === 'Send PDF via Email' && commandIsConfirmed) {
       setTimeout(async () => {
-        const pdfBase64 = await generatePDF(); // Generate PDF and get base64 string
-        await uploadPDF(pdfBase64); // Send the PDF via email
-        setShowContent(false); // Hide content after sending
+        const pdfBase64 = await generatePDF();
+        await uploadPDF(pdfBase64);
+        setShowContent(false);
       }, 1000);
     } else {
-      setShowContent(false); // Hide content if it's another tab
+      setShowContent(false);
     }
 
-    // Update the current tab state
     setCurrentTab(tabName);
     setTabs((prevTabs) =>
       prevTabs.map((tab) => ({
         ...tab,
         current: tab.name === tabName,
       }))
-    ); // Set the clicked tab as current
+    );
   };
 
   const generatePDF = async (): Promise<string> => {
@@ -118,7 +121,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
 
     try {
       await axios.post('http://localhost:7070/api/consultant/sendInvoiceToClient',
-        { pdf: pdfBase64, email: "ech.chaaraouiamine@gmail.com", userName: "echcho" },
+        { pdf: pdfBase64, email: email, userName: "echcho" }, // Use the dynamic email state
         {
           headers: {
             'Content-Type': 'application/json',
@@ -133,9 +136,13 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
     }
   };
 
+  const handleConfirm = (updatedEmail: string, signatureData: string | null) => {
+    updateCommandStatus(true);
+    setEmail(updatedEmail); 
+  };
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg">
-      {/* Tab Navigation */}
       <div className="hidden sm:block">
         <nav className="isolate flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
           {tabs.map((tab, tabIdx) => (
@@ -151,10 +158,10 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
               aria-current={tab.current ? 'page' : undefined}
               onClick={() => {
                 if (!tab.disabled) {
-                  handleTabClick(tab.name); // Handle tab click only if not disabled
+                  handleTabClick(tab.name);
                 }
               }}
-              disabled={tab.disabled} // Set button as disabled
+              disabled={tab.disabled}
             >
               <span>{tab.name}</span>
               <span
@@ -175,6 +182,14 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
           <PdfPrintableContent />
         </div>
       )}
+
+      {/* Email and Signature Modal */}
+      <EmailSignatureModal
+        isOpen={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        onConfirm={handleConfirm}
+        initialEmail={email}
+      />
     </div>
   );
 };

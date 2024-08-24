@@ -109,7 +109,7 @@ function Dashboard() {
         
         
         <Route
-          path="/CommandInfo/:clientId"
+          path="/CommandInfo/:commandId"
           element={
             <>
               <PageTitle title="Command Info" />
