@@ -18,6 +18,7 @@ import Welcome from './components/Welcome';
 import AddClient from './components/addClient';
 import ClientProfile from './components/ClientProfile';
 import Commands from './components/Commands';
+import ConsultCommand from './pages/ConsultCommad';
 
 
 //import CommandInfo from './pages/CommandInfo';
@@ -109,10 +110,11 @@ function Dashboard() {
         
         
         <Route
-          path="/CommandInfo/:clientId"
+          path="/CommandInfo/:commandId"
           element={
             <>
               <PageTitle title="Command Info" />
+              <ConsultCommand></ConsultCommand>
               <br />
             </>
           }

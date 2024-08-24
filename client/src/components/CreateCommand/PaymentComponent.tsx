@@ -85,11 +85,7 @@ const PaymentComponent = () => {
           />
         </div>
 
-        <div className="mt-10 text-center">
-          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-            Confirmer
-          </button>
-        </div>
+        
       </div>
     </div>
   );

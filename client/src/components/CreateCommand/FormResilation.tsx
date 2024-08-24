@@ -216,7 +216,7 @@ const FormResilation = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-8">
             <label htmlFor="signature" className="block text-gray-800 font-semibold mb-1">
               SIGNATURE
             </label>
@@ -229,14 +229,7 @@ const FormResilation = () => {
             />
           </div>
 
-          <div className="text-center mt-8">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
-            >
-              Soumettre
-            </button>
-          </div>
+          
         </form>
       </div>
       <style jsx>{`
