@@ -5,12 +5,15 @@ import jsPDF from 'jspdf';
 import PdfPrintableContent from './PdfPrintableContent';
 import axios from 'axios';
 import EmailSignatureModal from './EmailSignatureModal';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const initialTabs = [
   { name: 'Confirm', href: '#', current: true, disabled: false },
   { name: 'Download PDF', href: '#', current: false, disabled: true },
   { name: 'Send PDF via Email', href: '#', current: false, disabled: true },
-  { name: 'Billing', href: '#', current: false, disabled: true },
+  { name: 'Go Home', href: '#', current: true , disabled: false },
 ];
 
 function classNames(...classes: (string | undefined)[]): string {
@@ -27,6 +30,8 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
   const { updateCommandStatus, commandIsConfirmed, client: contextClient } = useProductContext();
 
   const [email, setEmail] = useState<string>(contextClient?.email || ''); // Initialize with contextClient
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     if (commandIsConfirmed) {
@@ -51,24 +56,20 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
     setShowContent(true);
 
     if (tabName === 'Confirm') {
-    
       setModalIsOpen(true);
-
     } else if (tabName === 'Download PDF' && commandIsConfirmed) {
-
       const pdfBase64 = await generatePDF();
       const link = document.createElement('a');
       link.href = `data:application/pdf;base64,${pdfBase64}`;
-      link.download = 'document.pdf';
+      link.download = `invoice_${contextClient.fullName}.pdf`;
       link.click();
       setShowContent(false);
-
     } else if (tabName === 'Send PDF via Email' && commandIsConfirmed) {
-      setTimeout(async () => {
-        const pdfBase64 = await generatePDF();
-        await uploadPDF(pdfBase64);
-        setShowContent(false);
-      }, 1000);
+      const pdfBase64 = await generatePDF();
+      await uploadPDF(pdfBase64);
+      setShowContent(false);
+    } else if (tabName === 'Go Home') {
+      navigate("/"); // Use navigate function for programmatic navigation
     } else {
       setShowContent(false);
     }
@@ -121,7 +122,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
 
     try {
       await axios.post('http://localhost:7070/api/consultant/sendInvoiceToClient',
-        { pdf: pdfBase64, email: email, userName: "echcho" }, // Use the dynamic email state
+        { pdf: pdfBase64, email: email, userName: contextClient.fullName },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -129,16 +130,21 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
           },
         }
       );
-      alert('PDF sent successfully!');
+      toast.success("PDF sent successfully!", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
     } catch (error) {
-      console.error('Error uploading PDF:', error);
-      alert('Failed to send PDF.');
+      toast.error('Failed to send PDF.', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
     }
   };
 
   const handleConfirm = (updatedEmail: string, signatureData: string | null) => {
     updateCommandStatus(true);
-    setEmail(updatedEmail); 
+    setEmail(updatedEmail);
   };
 
   return (

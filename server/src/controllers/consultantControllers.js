@@ -139,7 +139,6 @@ const getAllClients = async (req, res) => {
     }
 };
 
-
 const createCommand = async (req, res) => {
     const { clientId, object } = req.body;
     try {
@@ -232,9 +231,6 @@ const sendInvoiceToClient = async (req, res) => {
         if (pdfBase64) {
             // Decode base64 string to binary
             const pdfBuffer = Buffer.from(pdfBase64, 'base64');
-            // Write the file to a temporary location
-            const filePath = path.join(__dirname, Date.now() + 'temp.pdf');
-            fs.writeFileSync(filePath, pdfBuffer);
 
             // Configure Nodemailer
             const transporter = nodemailer.createTransport({
@@ -266,15 +262,14 @@ const sendInvoiceToClient = async (req, res) => {
                 attachments: [
                     {
                         filename: `invoice_${userName}.pdf`,
-                        path: filePath,
+                        content: pdfBuffer, // Use the buffer directly
+                        contentType: 'application/pdf',
                     },
                 ],
             };
 
-
             try {
                 await transporter.sendMail(mailOptions);
-                fs.unlinkSync(filePath); // Clean up the temporary file
                 res.status(200).send('Email sent successfully');
             } catch (error) {
                 res.status(500).send('Error sending email');
@@ -285,7 +280,7 @@ const sendInvoiceToClient = async (req, res) => {
     } catch (error) {
         res.status(500).send('An internal error occurred');
     }
-}
+};
 
 
 

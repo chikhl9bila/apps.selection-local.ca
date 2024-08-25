@@ -48,7 +48,7 @@ interface SubClient {
 interface Client {
   _id?: string;
   fullName?: string;
-  email?: string;
+  email?: string | null;
   appointment?: Appointment;
   address?: Address;
   phoneNumbers?: PhoneNumbers;

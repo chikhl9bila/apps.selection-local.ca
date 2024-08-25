@@ -2,32 +2,10 @@ import React, { useRef, useState } from 'react';
 import Modal from 'react-modal';
 import SignatureCanvas from 'react-signature-canvas';
 import { useProductContext } from '../../contexts/ProductContext';
-import axios from 'axios'
-import useLocalStorage from '../../hooks/useLocalStorage';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
-
-
-
-
-
-
-
-
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  format: string;
-  price: number;
-  imageSrc: string;
-  imageAlt: string;
-  category: string;
-  quantities: number[];
-  basicQuantities: number[];
-}
 
 interface TransformedProduct {
   name: string;
@@ -39,15 +17,13 @@ interface ProductsByCategory {
   [category: string]: TransformedProduct[];
 }
 
-
-
-
 interface EmailSignatureModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (email: string, signatureData: string | null) => void;
+  onConfirm: (email: string | null, signatureData: string | null) => void;
   initialEmail: string;
 }
+
 const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
   isOpen,
   onClose,
@@ -58,27 +34,25 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
   const [signatureData, setSignatureData] = useState<string | null>(null);
   const signatureRef = useRef<SignatureCanvas>(null);
   const { clientId } = useParams<{ clientId: string }>();
-  const { updateClient, products , nombreOfLivraison} = useProductContext(); // Use context to update client
+  const { updateClient, products, nombreOfLivraison, client } = useProductContext();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handleSaveSignature = () => {
+  const handleSaveSignature = (): string | null => {
     if (signatureRef.current) {
       const dataUrl = signatureRef.current.toDataURL();
       setSignatureData(dataUrl);
+      return dataUrl;
     }
+    return null;
   };
 
-
-
   const productsByCategory = (): ProductsByCategory => {
-    const newproducts: ProductsByCategory = {}; 
+    const newproducts: ProductsByCategory = {};
     try {
-      console.log(products)
       products.forEach((product) => {
-
         let sommeofcommands = 0;
         for (let i = 0; i < nombreOfLivraison; i++) {
           sommeofcommands += product.quantities[i];
@@ -97,47 +71,50 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
             name: product.name,
             quantity: product.quantities,
             price: product.price,
-          }); // Corrected syntax error
+          });
         }
       });
 
       return newproducts;
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
     return newproducts;
   };
 
-
-
   const handleConfirm = async () => {
-    handleSaveSignature()
-    updateClient({ email, signature: signatureData });
+    const savedSignature = handleSaveSignature();
+    if (savedSignature) {
+      updateClient({ signature: savedSignature });
+      updateClient({ email: email ? email : null });
 
-    try {
-      const token = localStorage.getItem('token');
-      const productsByCategoris = productsByCategory();
-      console.log(productsByCategoris)
-      const dataToSend = { clientId: clientId, object: {"NL" : nombreOfLivraison , products : productsByCategoris} }
+      try {
+        const token = localStorage.getItem('token');
+        const productsByCategoris = productsByCategory();
+        const dataToSend = {
+          clientId: clientId,
+          object: { NL: nombreOfLivraison, products: productsByCategoris },
+        };
 
-      await axios.post("http://localhost:7070/api/consultant/createCommand", dataToSend, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        await axios.post("http://localhost:7070/api/consultant/createCommand", dataToSend, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      })
-      toast.success("Command created successfully!", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000,
-      });
-      onConfirm(email, signatureData);
-      onClose();
-    } catch {
+        toast.success("Command created successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
 
-      toast.error("Error creating Command!!", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000,
-      });
+        onConfirm(email, savedSignature);
+        onClose();
+      } catch (error) {
+        toast.error("Error creating Command!!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+      }
     }
   };
 
@@ -176,7 +153,6 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
         />
 
         <div className="mt-4 flex justify-end space-x-2">
-
           <button
             onClick={handleConfirm}
             className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"

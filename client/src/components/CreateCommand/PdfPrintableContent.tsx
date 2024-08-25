@@ -7,9 +7,10 @@ import FormResilation from './FormResilation';
 import PdfHead from './PdfHead'
 import SummaryTable from './SummaryTable';
 import { useProductContext } from '../../contexts/ProductContext';
+import FoodServiceSummary from './FoodServiceSummary';
 const PdfPrintableContent: React.FC = () => {
 
-  const {client} = useProductContext();
+  const { client } = useProductContext();
   return (
     <div>
       <PdfHead />
@@ -71,19 +72,38 @@ const PdfPrintableContent: React.FC = () => {
         </li>
 
       </ul>
-
+      <br /><br /><br />
+      <FoodServiceSummary></FoodServiceSummary>
+      
+      <br /><br />
       <PaymentComponentpdf />
-      <div className='m-40'>
-        s
-      </div>
-      <div className='m-40'>
-        s
-      </div>
+
 
       <FormResilation />
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
 
-
-      <img src={client.signature} alt="Client Signature" className="border border-gray-300" />
+      { (
+        <div className="flex flex-col items-center mt-10">
+          <h3 className="text-lg font-semibold mb-4">Signature Client</h3>
+          <div className="border border-gray-300 p-4">
+            <img
+              src={client.signature}
+              alt="Client Signature"
+              className="border border-gray-300"
+            />
+          </div>
+        </div>
+      )}
     </div>
 
   );
