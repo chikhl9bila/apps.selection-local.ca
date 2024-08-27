@@ -1,4 +1,4 @@
-import React, { useState,  useRef , useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useProductContext } from '../contexts/ProductContext';
 import LivraisonButtons from '../components/CreateCommand/LivraisonButtons';
 import ListofProducts from '../components/CreateCommand/ListofProducts';
@@ -18,9 +18,11 @@ import OrderControl from '../components/CreateCommand/OrderControl';
 import FoodServiceSummary from '../components/CreateCommand/FoodServiceSummary';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import PdfPrintableContent from '../components/CreateCommand/PdfPrintableContent';
+import { useNavigate } from 'react-router-dom';
 
-import  '../components/CreateCommand/tailwind.output.css';
-import Loader from '../common/Loader';
+import '../components/CreateCommand/tailwind.output.css';
+import GlobalLoader from '../common/Loader/GlobalLoader';
 
 
 interface Title {
@@ -32,21 +34,23 @@ interface Title {
 }
 
 const CreateCommande: React.FC = () => {
-  
-  const {  updateClient } = useProductContext();
+  const printRef = useRef<HTMLDivElement | null>(null);
+  const { updateClient } = useProductContext();
   const [selectedCategory, setSelectedCategory] = useState<string>('BOEUF');
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(true);
   const [isFraisMentionVisible, setIsFraisMentionVisible] = useState<boolean>(true);
   const [isPaymentVisible, setIsPaymentVisible] = useState<boolean>(true);
   const [isMenuBase, setIsMenuBase] = useState<boolean>(true);
   const [isFormulaire, setIsFormulaire] = useState<boolean>(true);
-  const [isLoading,setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isfirstLoading, setIsfirstLoading] = useState<boolean>(false);
   const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
-
+  const navigate = useNavigate();
 
 
   useEffect(() => {
     const fetchClientData = async () => {
+      console.log("i am fetching and reintialize state")
       try {
         const token = localStorage.getItem('token');
 
@@ -63,15 +67,16 @@ const CreateCommande: React.FC = () => {
 
         const data = response.data;
         updateClient(data); // Update the context with the fetched client data
+        setIsLoading(false);
+        setIsfirstLoading(true)
       } catch (error) {
-        console.error('Error fetching client data:', error);
-      } finally {
-        setIsLoading(false); // Hide the loader once the data is fetched
+        console.error(error);
+        navigate("/")
       }
     };
 
     fetchClientData();
-  }, [clientId, updateClient]);
+  }, []);
   const titles: Title[] = [
     {
       step: 1,
@@ -147,17 +152,20 @@ const CreateCommande: React.FC = () => {
 
   return (
     <div className="bg-white">
+
+
+
       {isLoading ? (
-        <Loader /> // Show loader while fetching data
+        <GlobalLoader /> // Show loader while fetching data
       ) : (
         <>
           <NavbarCommande onCategoryChange={handleCategoryChange} />
           {selectedCategory !== 'FIN' && selectedTitle && (
             <>
-            <br/>
-            <br/>
-        
-            <br/>
+              <br />
+              <br />
+
+              <br />
               <div className="flex justify-between items-center my-4 px-6">
                 <LivraisonButtons />
                 <div className="flex space-x-4">
@@ -208,7 +216,7 @@ const CreateCommande: React.FC = () => {
                 className={`my-3 hover:bg-gray-200 transition duration-300 ${isPaymentVisible ? 'bg-blue-100' : ''}`}
               />
               {isPaymentVisible && <PaymentComponent />}
-              <FoodServiceSummary/>
+              <FoodServiceSummary />
 
 
               <ButtonDivider
@@ -217,11 +225,32 @@ const CreateCommande: React.FC = () => {
                 className={`my-3 hover:bg-gray-200 transition duration-300 ${isFormulaire ? 'bg-blue-100' : ''}`}
               />
               {isFormulaire && <FormResilation />}
-              <OrderControl setIsLoading={setIsLoading} />
+              <OrderControl setIsLoading={setIsLoading} printRef={printRef} />
+              <br />
+              <br /><br /><br />
             </>
+
           )}
         </>
       )}
+
+
+{isfirstLoading && (
+  <div
+    ref={printRef}
+    style={{
+      position: 'absolute',
+      left: '-9999px',
+      top: '-9999px',
+      width: '1155px',
+    }}
+  >
+    <PdfPrintableContent />
+  </div>
+)}
+
+
+
     </div>
   );
 };

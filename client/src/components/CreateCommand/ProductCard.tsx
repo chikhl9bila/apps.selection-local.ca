@@ -32,15 +32,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     updateProduct(product.id, { quantities: newQuantities });
   };
 
-  // Calculate the total price for basic quantities up to nombreOfLivraison
   const basicTotalPrice = product.basicQuantities
     ? product.basicQuantities.slice(0, nombreOfLivraison).reduce((total, quantity) => total + quantity * product.price, 0)
     : 0;
 
-  // Calculate the total price for current quantities up to nombreOfLivraison
   const totalPrice = product.quantities.slice(0, nombreOfLivraison).reduce((total, quantity) => total + quantity * product.price, 0);
 
-  // Calculate the difference
   const priceDifference = totalPrice - basicTotalPrice;
 
   return (
@@ -48,12 +45,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       key={product.id}
       className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
     >
-      <div className="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
+      <div className="relative aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none sm:h-96">
+        {/* Primary Image */}
         <img
           src={product.imageSrc}
           alt={product.imageAlt}
           className="h-full w-full object-cover object-center sm:h-full sm:w-full"
         />
+
+        {/* Hover Image */}
+        {product.imageSrc && (
+          <img
+            src={'/images/product/' + 'h' + product.imageSrc.split('/product/')[1]   }
+            alt={product.imageAlt + 'Hover image'}
+            className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+          />
+        )}
       </div>
       <div className="flex flex-1 flex-col space-y-2 p-4">
         <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>

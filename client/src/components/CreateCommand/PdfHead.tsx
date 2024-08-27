@@ -1,7 +1,9 @@
 import React from 'react';
 import myImage from '../../images/logo/logo-dark.png'; // Replace with the correct path to your image
+import { useProductContext } from '../../contexts/ProductContext';
 
 const Header = () => {
+  const {client} = useProductContext() ; 
     return (
       <div className="w-full h-[50vh] flex flex-col justify-between">
         {/* Top Image Section */}
@@ -18,7 +20,7 @@ const Header = () => {
         {/* Order Number Section */}
         <div className="text-center py-8">
           <h3 className="text-xl font-bold">BON DE COMMANDE N°</h3>
-          <p className="text-lg mt-2">3811708</p>
+          <p className="text-lg mt-2">{client.CommandNumber ? client.CommandNumber : "N/A"}</p>
           <hr className="mt-6" />
         </div>
       </div>

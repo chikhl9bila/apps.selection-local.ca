@@ -20,7 +20,7 @@ interface ProductsByCategory {
 interface EmailSignatureModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (email: string | null, signatureData: string | null) => void;
+  onConfirm: (email: string | null) => void;
   initialEmail: string;
 }
 
@@ -31,22 +31,25 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
   initialEmail,
 }) => {
   const [email, setEmail] = useState(initialEmail);
-  const [signatureData, setSignatureData] = useState<string | null>(null);
-  const signatureRef = useRef<SignatureCanvas>(null);
+  const signatureRef1 = useRef<SignatureCanvas>(null);
+  const signatureRef2 = useRef<SignatureCanvas>(null);
   const { clientId } = useParams<{ clientId: string }>();
-  const { updateClient, products, nombreOfLivraison, client } = useProductContext();
+  const { updateClient, products, nombreOfLivraison } = useProductContext();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handleSaveSignature = (): string | null => {
-    if (signatureRef.current) {
-      const dataUrl = signatureRef.current.toDataURL();
-      setSignatureData(dataUrl);
-      return dataUrl;
+  const handleSaveSignature = (): { dataUrl1: string, dataUrl2: string } => {
+    let dataUrl1;
+    let dataUrl2;
+    if (signatureRef1.current) {
+      dataUrl1 = signatureRef1.current.toDataURL();
     }
-    return null;
+    if (signatureRef2.current) {
+      dataUrl2 = signatureRef2.current.toDataURL();
+    }
+    return { dataUrl1, dataUrl2 };
   };
 
   const productsByCategory = (): ProductsByCategory => {
@@ -83,9 +86,9 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
   };
 
   const handleConfirm = async () => {
-    const savedSignature = handleSaveSignature();
-    if (savedSignature) {
-      updateClient({ signature: savedSignature });
+    const savedSignatures = handleSaveSignature();
+    if (savedSignatures) {
+      updateClient({ signature1: savedSignatures.dataUrl1, signature2: savedSignatures.dataUrl2 });
       updateClient({ email: email ? email : null });
 
       try {
@@ -96,18 +99,19 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
           object: { NL: nombreOfLivraison, products: productsByCategoris },
         };
 
-        await axios.post("http://localhost:7070/api/consultant/createCommand", dataToSend, {
+        const response = await axios.post("http://localhost:7070/api/consultant/createCommand", dataToSend, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        updateClient({CommandNumber : response.data.savedCommand.orderNumber})
 
         toast.success("Command created successfully!", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 3000,
         });
 
-        onConfirm(email, savedSignature);
+        onConfirm(email);
         onClose();
       } catch (error) {
         toast.error("Error creating Command!!", {
@@ -141,16 +145,34 @@ const EmailSignatureModal: React.FC<EmailSignatureModalProps> = ({
           />
         </div>
 
-        <SignatureCanvas
-          ref={signatureRef}
-          penColor="black"
-          canvasProps={{
-            className: 'border border-gray-300',
-            width: 600,
-            height: 300,
-          }}
-          backgroundColor="white"
-        />
+        <div className="flex justify-between">
+          <div className="w-1/2 p-4">
+            <h2 className="text-lg font-semibold mb-2">Signature Client 1</h2>
+            <SignatureCanvas
+              ref={signatureRef1}
+              penColor="black"
+              canvasProps={{
+                className: 'border border-gray-300',
+                width: 600,
+                height: 300,
+              }}
+              backgroundColor="white"
+            />
+          </div>
+          <div className="w-1/2 p-4">
+            <h2 className="text-lg font-semibold mb-2">Signature Client 2</h2>
+            <SignatureCanvas
+              ref={signatureRef2}
+              penColor="black"
+              canvasProps={{
+                className: 'border border-gray-300',
+                width: 600,
+                height: 300,
+              }}
+              backgroundColor="white"
+            />
+          </div>
+        </div>
 
         <div className="mt-4 flex justify-end space-x-2">
           <button

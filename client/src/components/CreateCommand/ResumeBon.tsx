@@ -1,8 +1,11 @@
 import React from 'react';
 import garantyImage from '../../images/garantyClientGarantie.png';
 import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
+import { useProductContext } from '../../contexts/ProductContext';
+
 
 const ResumeBon: React.FC = () => {
+  const {client} = useProductContext();
   return (
     <div className="bg-gray-50 px-6 py-16 sm:py-24 lg:px-8">
       <div className="mx-auto max-w-[45rem] text-center">
@@ -36,7 +39,7 @@ const ResumeBon: React.FC = () => {
         </div>
         <div className="mt-12 text-center">
           <h3 className="text-2xl font-extrabold text-gray-800">Bon de commande</h3>
-          <p className="text-lg text-gray-600 mt-2">N° 723961</p>
+          <p className="text-lg text-gray-600 mt-2">N° : {client.CommandNumber ? client.CommandNumber : "N/A"}</p>
         </div>
       </div>
     </div>

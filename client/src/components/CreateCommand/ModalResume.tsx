@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useProductContext } from '../../contexts/ProductContext';
 import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
 
@@ -104,14 +103,7 @@ export default function ModalResume() {
                 </Transition>
               </div>
               <div className="absolute top-2 right-2">
-                <button
-                  type="button"
-                  className="inline-flex rounded-md bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  onClick={() => setShow(false)}
-                >
-                  <span className="sr-only">Close</span>
-                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
+
               </div>
             </div>
           </Transition>

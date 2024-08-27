@@ -60,10 +60,12 @@ interface Client {
   beenConsulted?: boolean;
   commandId?: string | null;
   consultantId?: string | null;
-  signature?: string | null;
+  signature1?: string | null;
+  signature2?: string | null;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
+  CommandNumber:number | null ; 
 }
 
 interface ProductContextType {

@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useProductContext } from '../../contexts/ProductContext';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import PdfPrintableContent from './PdfPrintableContent';
 import axios from 'axios';
 import EmailSignatureModal from './EmailSignatureModal';
 import { toast } from 'react-toastify';
@@ -13,16 +12,15 @@ const initialTabs = [
   { name: 'Confirm', href: '#', current: true, disabled: false },
   { name: 'Download PDF', href: '#', current: false, disabled: true },
   { name: 'Send PDF via Email', href: '#', current: false, disabled: true },
-  { name: 'Go Home', href: '#', current: true , disabled: false },
+  { name: 'Go Home', href: '#', current: true, disabled: false },
 ];
 
 function classNames(...classes: (string | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setIsLoading }) => {
-  const printRef = useRef<HTMLDivElement | null>(null);
-  const [showContent, setShowContent] = useState(false);
+const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, printRef: React.RefObject<HTMLDivElement> }> = ({ setIsLoading, printRef }) => {
+
   const [currentTab, setCurrentTab] = useState(initialTabs[0].name);
   const [tabs, setTabs] = useState(initialTabs);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -53,25 +51,25 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
   }, [contextClient]);
 
   const handleTabClick = async (tabName: string) => {
-    setShowContent(true);
 
     if (tabName === 'Confirm') {
       setModalIsOpen(true);
     } else if (tabName === 'Download PDF' && commandIsConfirmed) {
+      setIsLoading(true);
       const pdfBase64 = await generatePDF();
       const link = document.createElement('a');
       link.href = `data:application/pdf;base64,${pdfBase64}`;
       link.download = `invoice_${contextClient.fullName}.pdf`;
       link.click();
-      setShowContent(false);
+      setIsLoading(false);
     } else if (tabName === 'Send PDF via Email' && commandIsConfirmed) {
+      setIsLoading(true);
       const pdfBase64 = await generatePDF();
       await uploadPDF(pdfBase64);
-      setShowContent(false);
+      setIsLoading(false);
     } else if (tabName === 'Go Home') {
       navigate("/"); // Use navigate function for programmatic navigation
     } else {
-      setShowContent(false);
     }
 
     setCurrentTab(tabName);
@@ -86,7 +84,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
   const generatePDF = async (): Promise<string> => {
     if (printRef.current) {
       const canvas = await html2canvas(printRef.current, { scale: 1.75 });
-      const imgData = canvas.toDataURL('image/jpeg', 0.85);
+      const imgData = canvas.toDataURL('image/jpeg', 0.55);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -142,7 +140,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
     }
   };
 
-  const handleConfirm = (updatedEmail: string, signatureData: string | null) => {
+  const handleConfirm = (updatedEmail: string) => {
     updateCommandStatus(true);
     setEmail(updatedEmail);
   };
@@ -183,11 +181,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
       </div>
 
       {/* PdfPrintableContent for PDF Generation */}
-      {showContent && (
-        <div ref={printRef} style={{ display: 'block', zIndex: -1, position: 'absolute' }}>
-          <PdfPrintableContent />
-        </div>
-      )}
+
 
       {/* Email and Signature Modal */}
       <EmailSignatureModal

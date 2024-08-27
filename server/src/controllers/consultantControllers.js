@@ -272,12 +272,15 @@ const sendInvoiceToClient = async (req, res) => {
                 await transporter.sendMail(mailOptions);
                 res.status(200).send('Email sent successfully');
             } catch (error) {
+                console.error(error);
                 res.status(500).send('Error sending email');
             }
         } else {
+            console.log("no pdf")
             res.status(400).send('No PDF data received');
         }
     } catch (error) {
+        console.log(error)
         res.status(500).send('An internal error occurred');
     }
 };

@@ -94,16 +94,30 @@ const PdfPrintableContent: React.FC = () => {
 
       { (
         <div className="flex flex-col items-center mt-10">
-          <h3 className="text-lg font-semibold mb-4">Signature Client</h3>
+          <h3 className="text-lg font-semibold mb-4">Signature Client 1 </h3>
           <div className="border border-gray-300 p-4">
             <img
-              src={client.signature}
+              src={client.signature1}
               alt="Client Signature"
               className="border border-gray-300"
             />
           </div>
         </div>
       )}
+      { (
+        <div className="flex flex-col items-center mt-10">
+          <h3 className="text-lg font-semibold mb-4">Signature Client 2 </h3>
+          <div className="border border-gray-300 p-4">
+            <img
+              src={client.signature2}
+              alt="Client Signature"
+              className="border border-gray-300"
+            />
+          </div>
+        </div>
+      )}
+
+      
     </div>
 
   );
