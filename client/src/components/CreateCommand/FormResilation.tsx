@@ -1,4 +1,50 @@
 import React, { useState } from "react";
+import { useProductContext } from '../../contexts/ProductContext';
+
+const translations = {
+  en: {
+    formTitle: "CANCELLATION FORM",
+    merchantSection: "To be completed by the merchant",
+    merchantName: "MERCHANT NAME",
+    address: "ADDRESS",
+    contact: "CONTACT AT THIS NUMBER",
+    email: "EMAIL",
+    consumerSection: "To be completed by the consumer",
+    formDate: "FORM SEND DATE",
+    cancellationText: "Under section 59 of the Consumer Protection Act, I cancel the following contract:",
+    contractNumber: "CONTRACT NUMBER",
+    paymentOption: "PAYMENT OPTION",
+    creditCard: "CREDIT CARD",
+    interac: "INTERAC",
+    financing: "FINANCING",
+    concludedDate: "CONCLUDED ON",
+    customerName: "NAME",
+    customerAddress: "ADDRESS",
+    deliveryDate: "DELIVERY DATE",
+    signature: "SIGNATURE"
+  },
+  fr: {
+    formTitle: "FORMULAIRE DE RÉSILIATION",
+    merchantSection: "À remplir par le commerçant",
+    merchantName: "NOM DU COMMERÇANT",
+    address: "ADRESSE",
+    contact: "CONTACTER À CE NUMÉRO",
+    email: "COURRIEL",
+    consumerSection: "À remplir par le consommateur",
+    formDate: "DATE D'ENVOI DU FORMULAIRE",
+    cancellationText: "En vertu de l’article 59 de la loi sur la protection du consommateur, j’annule le contrat suivant :",
+    contractNumber: "NUMÉRO DE CONTRAT",
+    paymentOption: "OPTION DE PAIEMENT",
+    creditCard: "CARTE DE CRÉDIT",
+    interac: "INTERAC",
+    financing: "FINANCEMENT",
+    concludedDate: "CONCLU LE",
+    customerName: "NOM",
+    customerAddress: "ADRESSE",
+    deliveryDate: "DATE DE LIVRAISON",
+    signature: "SIGNATURE"
+  }
+};
 
 const FormResilation = () => {
   const [name, setName] = useState("");
@@ -14,6 +60,9 @@ const FormResilation = () => {
   const [deliveryDate, setDeliveryDate] = useState("");
   const [signature, setSignature] = useState("");
 
+  const { language } = useProductContext();
+  const t = translations[language] || translations.en;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Form submitted!");
@@ -23,19 +72,19 @@ const FormResilation = () => {
     <div className="flex justify-center items-center min-h-screen bg-white p-6">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl mx-auto border border-gray-300">
         <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">
-          FORMULAIRE DE RÉSILIATION
+          {t.formTitle}
         </h1>
 
         <div className="text-center mb-6">
           <p className="text-lg font-medium text-red-700">
-            À remplir par le commerçant
+            {t.merchantSection}
           </p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-800 font-semibold mb-1">
-              NOM DU COMMERÇANT
+              {t.merchantName}
             </label>
             <input
               type="text"
@@ -47,7 +96,7 @@ const FormResilation = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="address" className="block text-gray-800 font-semibold mb-1">
-              ADRESSE
+              {t.address}
             </label>
             <input
               type="text"
@@ -59,7 +108,7 @@ const FormResilation = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="contact" className="block text-gray-800 font-semibold mb-1">
-              CONTACTER À CE NUMÉRO:
+              {t.contact}
             </label>
             <input
               type="text"
@@ -71,7 +120,7 @@ const FormResilation = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="email" className="block text-gray-800 font-semibold mb-1">
-              COURRIEL
+              {t.email}
             </label>
             <input
               type="email"
@@ -84,13 +133,13 @@ const FormResilation = () => {
 
           <div className="text-center mb-6">
             <p className="text-lg font-medium text-red-700">
-              À remplir par le consommateur
+              {t.consumerSection}
             </p>
           </div>
 
           <div className="mb-4">
             <label htmlFor="date" className="block text-gray-800 font-semibold mb-1">
-              DATE D'ENVOI DU FORMULAIRE
+              {t.formDate}
             </label>
             <input
               type="date"
@@ -103,13 +152,13 @@ const FormResilation = () => {
 
           <div className="mb-4">
             <p className="text-gray-800 font-semibold mb-2">
-              En vertu de l’article 59 de la loi sur la protection du consommateur, j’annule le contrat suivant :
+              {t.cancellationText}
             </p>
           </div>
 
           <div className="mb-4">
             <label htmlFor="contractNumber" className="block text-gray-800 font-semibold mb-1">
-              NUMÉRO DE CONTRAT
+              {t.contractNumber}
             </label>
             <input
               type="text"
@@ -122,7 +171,7 @@ const FormResilation = () => {
 
           <div className="mb-4">
             <label className="block text-gray-800 font-semibold mb-1">
-              OPTION DE PAIEMENT
+              {t.paymentOption}
             </label>
             <div className="flex space-x-4">
               <label className="flex items-center space-x-2">
@@ -135,7 +184,7 @@ const FormResilation = () => {
                   onChange={(e) => setPaymentOption(e.target.value)}
                   className="form-radio"
                 />
-                <span>CARTE DE CRÉDIT</span>
+                <span>{t.creditCard}</span>
               </label>
               <label className="flex items-center space-x-2">
                 <input
@@ -147,7 +196,7 @@ const FormResilation = () => {
                   onChange={(e) => setPaymentOption(e.target.value)}
                   className="form-radio"
                 />
-                <span>INTERAC</span>
+                <span>{t.interac}</span>
               </label>
               <label className="flex items-center space-x-2">
                 <input
@@ -159,14 +208,14 @@ const FormResilation = () => {
                   onChange={(e) => setPaymentOption(e.target.value)}
                   className="form-radio"
                 />
-                <span>FINANCEMENT</span>
+                <span>{t.financing}</span>
               </label>
             </div>
           </div>
 
           <div className="mb-4">
             <label htmlFor="concludedDate" className="block text-gray-800 font-semibold mb-1">
-              CONCLU LE
+              {t.concludedDate}
             </label>
             <input
               type="date"
@@ -179,7 +228,7 @@ const FormResilation = () => {
 
           <div className="mb-4">
             <label htmlFor="customerName" className="block text-gray-800 font-semibold mb-1">
-              NOM
+              {t.customerName}
             </label>
             <input
               type="text"
@@ -192,7 +241,7 @@ const FormResilation = () => {
 
           <div className="mb-4">
             <label htmlFor="customerAddress" className="block text-gray-800 font-semibold mb-1">
-              ADRESSE
+              {t.customerAddress}
             </label>
             <input
               type="text"
@@ -205,7 +254,7 @@ const FormResilation = () => {
 
           <div className="mb-4">
             <label htmlFor="deliveryDate" className="block text-gray-800 font-semibold mb-1">
-              DATE DE LIVRAISON
+              {t.deliveryDate}
             </label>
             <input
               type="date"
@@ -216,9 +265,9 @@ const FormResilation = () => {
             />
           </div>
 
-          <div className="mb-8">
+          <div className="mb-6">
             <label htmlFor="signature" className="block text-gray-800 font-semibold mb-1">
-              SIGNATURE
+              {t.signature}
             </label>
             <input
               type="text"
@@ -229,38 +278,14 @@ const FormResilation = () => {
             />
           </div>
 
-          
+          <button
+            type="submit"
+            className="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700"
+          >
+            {t.formTitle}
+          </button>
         </form>
       </div>
-      <style jsx>{`
-        @media print {
-          body, html {
-            width: 210mm;
-            height: 297mm;
-          }
-          .container {
-            width: 100%;
-            max-width: 190mm;
-            margin: 0 auto;
-            padding: 0;
-          }
-          .bg-gray-100 {
-            background: white;
-          }
-          .shadow-lg {
-            box-shadow: none;
-          }
-          .border {
-            border: none;
-          }
-          .max-w-4xl {
-            max-width: 100%;
-          }
-          button {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 };

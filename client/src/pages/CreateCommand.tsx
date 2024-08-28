@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PdfPrintableContent from '../components/CreateCommand/PdfPrintableContent';
 import { useNavigate } from 'react-router-dom';
+import ContractResolutionNotice from '../components/CreateCommand/ContractResolutionNotice';
 
 import '../components/CreateCommand/tailwind.output.css';
 import GlobalLoader from '../common/Loader/GlobalLoader';
@@ -43,6 +44,7 @@ const CreateCommande: React.FC = () => {
   const [isMenuBase, setIsMenuBase] = useState<boolean>(true);
   const [isFormulaire, setIsFormulaire] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isContract, setIscontract] = useState<boolean>(true);
   const [isfirstLoading, setIsfirstLoading] = useState<boolean>(false);
   const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
   const navigate = useNavigate();
@@ -125,7 +127,9 @@ const CreateCommande: React.FC = () => {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
   };
-
+  const toggleContract =  () => {
+    setIscontract(prev => !prev);
+  }
   const toggleFormulaire = () => {
     setIsFormulaire(prev => !prev);
   };
@@ -216,7 +220,14 @@ const CreateCommande: React.FC = () => {
                 className={`my-3 hover:bg-gray-200 transition duration-300 ${isPaymentVisible ? 'bg-blue-100' : ''}`}
               />
               {isPaymentVisible && <PaymentComponent />}
-              <FoodServiceSummary />
+              {isPaymentVisible && <FoodServiceSummary />}
+              <ButtonDivider onClick={toggleContract}
+                            title="ContractResolutionNotice"
+                            className={`my-3 hover:bg-gray-200 transition duration-300 ${isFormulaire ? 'bg-blue-100' : ''}`}
+                            />
+              {isContract && <ContractResolutionNotice />}
+              
+
 
 
               <ButtonDivider

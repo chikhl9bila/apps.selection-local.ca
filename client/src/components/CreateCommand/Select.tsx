@@ -16,8 +16,30 @@ interface PaymentPlan {
   price: string;
 }
 
+// Define translations
+const translations = {
+  french: {
+    selectPaymentPlan: 'Choisissez un plan de paiement',
+    weekly: '52 paiements',
+    biWeekly: '26 paiements',
+    monthly: '12 paiements',
+    weeklyDescription: 'Par semaine',
+    biWeeklyDescription: 'Au 2 semaines',
+    monthlyDescription: 'Par mois',
+  },
+  english: {
+    selectPaymentPlan: 'Choose a payment plan',
+    weekly: '52 payments',
+    biWeekly: '26 payments',
+    monthly: '12 payments',
+    weeklyDescription: 'Per week',
+    biWeeklyDescription: 'Every 2 weeks',
+    monthlyDescription: 'Per month',
+  }
+};
+
 export default function Select() {
-  const { products, nombreOfLivraison } = useProductContext(); // Access the context
+  const { products, nombreOfLivraison, language } = useProductContext(); // Access the context
   const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<PaymentPlan | null>(null);
 
   const calculateTotalForDelivery = (): number => {
@@ -32,7 +54,7 @@ export default function Select() {
   };
 
   const calculateFinancingOptions = () => {
-    const total = calculateTotalForDelivery() + calculateTotalForDelivery()*0.56;
+    const total = calculateTotalForDelivery() + calculateTotalForDelivery() * 0.56;
     return {
       weeklyTotal: (total / 52).toFixed(2),
       biWeeklyTotal: (total / 26).toFixed(2),
@@ -42,15 +64,17 @@ export default function Select() {
 
   const financingOptions = calculateFinancingOptions();
 
+  const content = language === 'Francais' ? translations.french : translations.english;
+
   const paymentPlans: PaymentPlan[] = [
-    { id: 1, title: '52 paiements', description: 'Par semaine', price: `${financingOptions.weeklyTotal}$` },
-    { id: 2, title: '26 paiements', description: 'Au 2 semaines', price: `${financingOptions.biWeeklyTotal}$` },
-    { id: 3, title: '12 paiements', description: 'Par mois', price: `${financingOptions.monthlyTotal}$` },
+    { id: 1, title: content.weekly, description: content.weeklyDescription, price: `${financingOptions.weeklyTotal}$` },
+    { id: 2, title: content.biWeekly, description: content.biWeeklyDescription, price: `${financingOptions.biWeeklyTotal}$` },
+    { id: 3, title: content.monthly, description: content.monthlyDescription, price: `${financingOptions.monthlyTotal}$` },
   ];
 
   return (
     <fieldset>
-      <legend className="text-sm font-semibold leading-6 text-gray-900">Choisissez un plan de paiement</legend>
+      <legend className="text-sm font-semibold leading-6 text-gray-900">{content.selectPaymentPlan}</legend>
       <RadioGroup
         value={selectedPaymentPlan}
         onChange={setSelectedPaymentPlan}
