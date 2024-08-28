@@ -227,6 +227,8 @@ const sendInvoiceToClient = async (req, res) => {
         const pdfBase64 = req.body.pdf;
         const email = req.body.email;
         const userName = req.body.userName;
+        const language = req.body.language;
+        const commandNumber = req.body.commandNumber;
 
         if (pdfBase64) {
             // Decode base64 string to binary
@@ -241,11 +243,28 @@ const sendInvoiceToClient = async (req, res) => {
                 },
             });
 
-            const mailOptions = {
-                from: 'Selectionlocal05@gmail.com',
-                to: email,
-                subject: 'Selection Local Invoice',
-                html: `
+            let subject, html;
+            
+            if (language === 'francais') {
+                subject = 'Facture de Selection Local';
+                html = `
+                    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #fdf2f2;">
+                        <h2 style="color: #d32f2f; text-align: center; margin-bottom: 20px;">Bonjour ${userName},</h2>
+                        <p style="font-size: 16px; line-height: 1.5;">Nous espérons que vous allez bien. Vous trouverez ci-joint votre facture. Merci pour votre confiance !</p>
+                        <p style="font-size: 16px; line-height: 1.5;">Si vous avez des questions, n'hésitez pas à nous contacter à <a href="mailto:contact@selection-local.ca" style="color: #d32f2f; text-decoration: none;">contact@selection-local.ca</a>.</p>
+                        <p style="font-size: 16px; line-height: 1.5;">Vous pouvez également visiter notre site web : <a href="https://selection-local.ca" style="color: #d32f2f; text-decoration: none;">selection-local.ca</a></p>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <a href="https://selection-local.ca" style="display: inline-block; padding: 10px 20px; color: white; background-color: #d32f2f; border-radius: 5px; text-decoration: none;">Visitez notre site web</a>
+                        </div>
+                        <hr style="margin-top: 30px; border: 0; border-top: 1px solid #eee;">
+                        <p style="font-size: 14px; color: #777; text-align: center; margin-top: 20px;">Cordialement,</p>
+                        <p style="font-size: 14px; color: #333; text-align: center; font-weight: bold;">L'équipe de Selection Local</p>
+                    </div>
+                `;
+            } else {
+                // Default to English if not 'francais'
+                subject = 'Selection Local Invoice';
+                html = `
                     <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #fdf2f2;">
                         <h2 style="color: #d32f2f; text-align: center; margin-bottom: 20px;">Hello ${userName},</h2>
                         <p style="font-size: 16px; line-height: 1.5;">We hope you are doing well. Attached is your invoice. Thank you for your business!</p>
@@ -258,15 +277,23 @@ const sendInvoiceToClient = async (req, res) => {
                         <p style="font-size: 14px; color: #777; text-align: center; margin-top: 20px;">Best regards,</p>
                         <p style="font-size: 14px; color: #333; text-align: center; font-weight: bold;">Selection Local Team</p>
                     </div>
-                `,
+                `;
+            }
+            
+            const mailOptions = {
+                from: 'Selectionlocal05@gmail.com',
+                to: email,
+                subject: subject,
+                html: html,
                 attachments: [
                     {
-                        filename: `invoice_${userName}.pdf`,
+                        filename: `invoice_${userName}_${commandNumber}.pdf`,
                         content: pdfBuffer, // Use the buffer directly
                         contentType: 'application/pdf',
                     },
                 ],
             };
+            
 
             try {
                 await transporter.sendMail(mailOptions);

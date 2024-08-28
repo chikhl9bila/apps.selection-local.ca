@@ -120,7 +120,7 @@ const OrderControl: React.FC<{ setIsLoading: React.Dispatch<React.SetStateAction
 
     try {
       await axios.post('http://localhost:7070/api/consultant/sendInvoiceToClient',
-        { pdf: pdfBase64, email: email, userName: contextClient.fullName },
+        { pdf: pdfBase64, email: email, userName: contextClient.fullName , language : contextClient.language , commandNumber: contextClient.CommandNumber },
         {
           headers: {
             'Content-Type': 'application/json',
