@@ -7,7 +7,7 @@ const translations = {
     description: 'Description',
     weekly: 'Hebdomadaire',
     annual: 'Annuel',
-    totalService: 'Total de votre service alimentaire:',
+    totalService: 'Total de votre service alimentaire: ',
     includes: 'Inclut viandes, repas préparés, épicerie sèche, et congélateur (si option sélectionnée):',
     maintenance: 'Frais de maintenance:',
   },
