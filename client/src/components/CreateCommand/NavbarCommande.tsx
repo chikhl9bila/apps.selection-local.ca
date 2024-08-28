@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled CSS
+import '../CreateCommand/tailwind.output.css'; // Or the correct path to your compiled "CSS"
+import { useProductContext } from '../../contexts/ProductContext'; // Import the context
 
 interface Tab {
   name: string;
+  nameEn: string;
   href: string;
   current: boolean;
 }
@@ -12,19 +14,22 @@ interface NavbarCommandeProps {
 }
 
 const tabs: Tab[] = [
-  { name: 'BOEUF', href: '#', current: true },
-  { name: 'POULET', href: '#', current: false },
-  { name: 'PORC', href: '#', current: false },
-  { name: 'POISSON', href: '#', current: false },
-  { name: 'ÉPICERIE', href: '#', current: false },
-  { name: 'CONGÉLATEURS', href: '#', current: false },
-  { name: 'FIN', href: '#', current: false },
+  { name: 'BOEUF', nameEn:'BEEF', href: '#', current: true },
+  { name: 'POULET', nameEn:'CHICKEN', href: '#', current: false },
+  { name: 'PORC', nameEn:'PORK' ,href: '#', current: false },
+  { name: 'POISSON', nameEn:'FISH', href: '#', current: false },
+  { name: 'ÉPICERIE', nameEn:'GROCERY' ,href: '#', current: false },
+  { name: 'CONGÉLATEURS', nameEn:'FREEZERS', href: '#', current: false },
+  { name: 'FIN', nameEn: 'END', href: '#', current: false },
 ];
 
 const classNames = (...classes: (string | boolean | undefined)[]) =>
   classes.filter(Boolean).join(' ');
 
 const NavbarCommande: React.FC<NavbarCommandeProps> = ({ onCategoryChange }) => {
+  const { client } = useProductContext(); // Access the context
+  const { language } = client;
+  
   const [activeTab, setActiveTab] = useState<string>(
     tabs.find(tab => tab.current)?.name || tabs[0].name
   );
@@ -49,7 +54,7 @@ const NavbarCommande: React.FC<NavbarCommandeProps> = ({ onCategoryChange }) => 
         >
           {tabs.map((tab) => (
             <option key={tab.name} value={tab.name}>
-              {tab.name}
+              {language === 'Anglais' ? tab.nameEn : tab.name}
             </option>
           ))}
         </select>
@@ -73,7 +78,7 @@ const NavbarCommande: React.FC<NavbarCommandeProps> = ({ onCategoryChange }) => 
                   handleCategoryChange(tab.name);
                 }}
               >
-                {tab.name}
+                {language === 'Anglais' ? tab.nameEn : tab.name}
               </a>
             ))}
           </nav>

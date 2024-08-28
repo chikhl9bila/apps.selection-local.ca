@@ -60,7 +60,8 @@ const translations = {
 };
 
 const ContractResolutionNotice: React.FC = () => {
-  const { language } = useProductContext();
+  const { client } = useProductContext();
+  const {language} = client;
   const content = language === 'Francais' ? translations.french : translations.english;
 
   return (

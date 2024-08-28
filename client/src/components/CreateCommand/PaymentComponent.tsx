@@ -29,7 +29,8 @@ const translations = {
 const PaymentComponent = () => {
   const [paymentType, setPaymentType] = useState('Financement');
   const [firstDeliveryDate, setFirstDeliveryDate] = useState('');
-  const { products, nombreOfLivraison, language } = useProductContext();
+  const { products, nombreOfLivraison,client } = useProductContext();
+  const {language} =  client;
 
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);

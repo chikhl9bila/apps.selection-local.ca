@@ -29,14 +29,17 @@ import GlobalLoader from '../common/Loader/GlobalLoader';
 interface Title {
   step: number;
   category: string;
+  categoryEn: string;
   icon: string;
   title: string;
+  titleEn: string;
   description: string;
+  descriptionEn: string;
 }
 
 const CreateCommande: React.FC = () => {
   const printRef = useRef<HTMLDivElement | null>(null);
-  const { updateClient } = useProductContext();
+  const { updateClient,client } = useProductContext();
   const [selectedCategory, setSelectedCategory] = useState<string>('BOEUF');
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(true);
   const [isFraisMentionVisible, setIsFraisMentionVisible] = useState<boolean>(true);
@@ -47,6 +50,7 @@ const CreateCommande: React.FC = () => {
   const [isContract, setIscontract] = useState<boolean>(true);
   const [isfirstLoading, setIsfirstLoading] = useState<boolean>(false);
   const { clientId } = useParams<{ clientId: string }>(); // Get the id from the URL params
+  const  {language}=client;
   const navigate = useNavigate();
 
 
@@ -83,46 +87,65 @@ const CreateCommande: React.FC = () => {
     {
       step: 1,
       category: 'BOEUF',
+      categoryEn: 'BEEF',
       icon: '🐄',
       title: "BOEUF CANADIEN DE L'OUEST",
-      description: "Passionnés par l’alimentation, les défis et l’action, nous sommes fières de compter plus de 25 années combinées d'expertise dans le domaine alimentaire animés par le désir de répondre à vos besoins alimentaires essentiels."
+      titleEn: "WESTERN CANADIAN BEEF",
+      description: "Passionnés par l’alimentation, les défis et l’action, nous sommes fières de compter plus de 25 années combinées d'expertise dans le domaine alimentaire animés par le désir de répondre à vos besoins alimentaires essentiels.",
+      descriptionEn: "Passionate about food, challenges, and action, we proudly have over 25 years of combined expertise in the food industry, driven by the desire to meet your essential dietary needs."
     },
     {
       step: 2,
       category: 'POULET',
+      categoryEn: 'CHICKEN',
       icon: '🐔',
       title: "POULET DE GRAINREFROIDIT À L'AIR",
-      description: "Nous sélectionnons des poulets nourris aux grains, refroidis à l'air, pour garantir une qualité supérieure et un goût authentique."
+      titleEn: "AIR-COOLED GRAIN-FED CHICKEN",
+      description: "Nous sélectionnons des poulets nourris aux grains, refroidis à l'air, pour garantir une qualité supérieure et un goût authentique.",
+      descriptionEn: "We select grain-fed, air-cooled chickens to ensure superior quality and authentic taste."
     },
     {
       step: 3,
       category: 'PORC',
+      categoryEn: 'PORK',
       icon: '🐖',
       title: "JEUNE PORC DU QUÉBEC/CANADA",
-      description: "Nos porcs sont élevés dans des conditions respectueuses pour assurer une viande tendre et savoureuse."
+      titleEn: "YOUNG PORK FROM QUEBEC/CANADA",
+      description: "Nos porcs sont élevés dans des conditions respectueuses pour assurer une viande tendre et savoureuse.",
+      descriptionEn: "Our pigs are raised in respectful conditions to ensure tender and flavorful meat."
     },
     {
       step: 4,
       category: 'POISSON',
+      categoryEn: 'FISH',
       icon: '🐟',
       title: "PÊCHERIE RESPONSABLE",
-      description: "Nous privilégions des pêcheries responsables pour vous offrir des produits de la mer de qualité, tout en respectant l'environnement."
+      titleEn: "RESPONSIBLE FISHERY",
+      description: "Nous privilégions des pêcheries responsables pour vous offrir des produits de la mer de qualité, tout en respectant l'environnement.",
+      descriptionEn: "We prioritize responsible fisheries to offer you quality seafood while respecting the environment."
     },
     {
       step: 5,
       category: 'ÉPICERIE',
+      categoryEn: 'GROCERY',
       icon: '🛒',
       title: "ÉPICERIE",
-      description: "Découvrez notre sélection d'épicerie fine pour accompagner vos plats et régaler vos papilles."
+      titleEn: "GROCERY",
+      description: "Découvrez notre sélection d'épicerie fine pour accompagner vos plats et régaler vos papilles.",
+      descriptionEn: "Discover our selection of fine groceries to complement your dishes and delight your taste buds."
     },
     {
       step: 6,
       category: 'CONGÉLATEURS',
+      categoryEn: 'FREEZERS',
       icon: '❄️',
       title: "CONGÉLATEURS",
-      description: "Vous avez besoin d'un congélateur ? Voici les modèles que nous vous offrons."
+      titleEn: "FREEZERS",
+      description: "Vous avez besoin d'un congélateur ? Voici les modèles que nous vous offrons.",
+      descriptionEn: "Need a freezer? Here are the models we offer."
     },
   ];
+  
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -165,30 +188,29 @@ const CreateCommande: React.FC = () => {
         <>
           <NavbarCommande onCategoryChange={handleCategoryChange} />
           {selectedCategory !== 'FIN' && selectedTitle && (
-            <>
-              <br />
-              <br />
+          <>
+            <br />
+            <br />
 
-              <br />
-              <div className="flex justify-between items-center my-4 px-6">
-                <LivraisonButtons />
-                <div className="flex space-x-4">
-                  <ResetButton category={selectedCategory} />
-                  <ResetToBasicButton category={selectedCategory} />
-                </div>
+            <br />
+            <div className="flex justify-between items-center my-4 px-6">
+              <LivraisonButtons />
+              <div className="flex space-x-4">
+                <ResetButton category={selectedCategory} />
+                <ResetToBasicButton category={selectedCategory} />
               </div>
-              <FoodCategory
-                icon={selectedTitle.icon}
-                step={selectedTitle.step.toString()}
-                title={selectedTitle.title}
-                description={selectedTitle.description}
-                note="VEUILLEZ NOTER QUE LES IMAGES SONT À TITRES INDICATIVES SEULEMENT. MERCI"
-              />
+            </div>
+            <FoodCategory
+              icon={selectedTitle.icon}
+              step={selectedTitle.step.toString()}
+              title={language === 'Anglais' ? selectedTitle.titleEn : selectedTitle.title}
+              description={language === 'Anglais' ? selectedTitle.descriptionEn : selectedTitle.description}
+              note={language === 'Anglais' ? "PLEASE NOTE THAT IMAGES ARE FOR ILLUSTRATIVE PURPOSES ONLY. THANK YOU" : "VEUILLEZ NOTER QUE LES IMAGES SONT À TITRES INDICATIVES SEULEMENT. MERCI"}
+            />
               <ListofProducts category={selectedCategory} />
               <ModalResume />
-            </>
-          )}
-
+          </>
+        )}
           {selectedCategory === 'FIN' && (
             <>
               <ResumeBon />

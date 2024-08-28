@@ -5,6 +5,7 @@ import '../CreateCommand/tailwind.output.css';
 interface Product {
   id: number;
   name: string;
+  nameEn: string;
   format: string;
   price: number;
   quantities: number[];
@@ -17,7 +18,8 @@ interface SummaryTableProps {
 }
 
 export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
-  const { products, nombreOfLivraison } = useProductContext();
+  const { products, nombreOfLivraison,  client} = useProductContext();
+  const { language } = client;
 
   const calculateTotalPrice = (quantities: number[], price: number): number => {
     const limitedQuantities = quantities.slice(0, nombreOfLivraison);
@@ -67,7 +69,7 @@ export default function SummaryTable({ selectedCategory }: SummaryTableProps) {
 
               return (
                 <tr key={product.id} className="hover:bg-gray-100 transition-colors">
-                  <td className="py-2 pl-4 pr-2 text-xs sm:text-sm lg:text-base font-medium text-gray-900 sm:pl-6 border-b border-gray-300">{product.name}</td>
+                  <td className="py-2 pl-4 pr-2 text-xs sm:text-sm lg:text-base font-medium text-gray-900 sm:pl-6 border-b border-gray-300">{language === 'Francais' ? product.name : product.nameEn}</td>
                   <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.format}</td>
                   <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.price.toFixed(2)}$</td>
                   <td className="px-2 py-2 text-right text-xs sm:text-sm lg:text-base text-gray-500 border-b border-gray-300">{product.basicQuantities.slice(0, nombreOfLivraison).reduce((sum, q) => sum + q, 0)}</td>

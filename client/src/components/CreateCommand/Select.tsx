@@ -39,7 +39,8 @@ const translations = {
 };
 
 export default function Select() {
-  const { products, nombreOfLivraison, language } = useProductContext(); // Access the context
+  const { products, nombreOfLivraison,client } = useProductContext(); // Access the context
+  const {language} =   client;
   const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<PaymentPlan | null>(null);
 
   const calculateTotalForDelivery = (): number => {

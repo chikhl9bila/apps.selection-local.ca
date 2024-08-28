@@ -23,7 +23,7 @@ const translations = {
     deliveryDate: "DELIVERY DATE",
     signature: "SIGNATURE"
   },
-  fr: {
+  Francais: {
     formTitle: "FORMULAIRE DE RÉSILIATION",
     merchantSection: "À remplir par le commerçant",
     merchantName: "NOM DU COMMERÇANT",
@@ -60,7 +60,8 @@ const FormResilation = () => {
   const [deliveryDate, setDeliveryDate] = useState("");
   const [signature, setSignature] = useState("");
 
-  const { language } = useProductContext();
+  const { client } = useProductContext();
+  const  {language}  = client;
   const t = translations[language] || translations.en;
 
   const handleSubmit = (event) => {
@@ -278,12 +279,6 @@ const FormResilation = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700"
-          >
-            {t.formTitle}
-          </button>
         </form>
       </div>
     </div>

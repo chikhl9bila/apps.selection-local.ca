@@ -3,7 +3,7 @@ import { useProductContext } from '../../contexts/ProductContext';
 
 // Define translations
 const translations = {
-  french: {
+  Francais: {
     description: 'Description',
     weekly: 'Hebdomadaire',
     annual: 'Annuel',
@@ -22,7 +22,8 @@ const translations = {
 };
 
 const FoodServiceSummary: React.FC = () => {
-  const { calculateTotalFoodService, language } = useProductContext();
+  const { calculateTotalFoodService, client } = useProductContext();
+  const  {language} = client;
   const { totalService, maintenanceExpenses, totalProductsPrice } = calculateTotalFoodService();
 
   // Assuming the provided amounts are weekly and multiplying by 52 for annual calculations
@@ -30,7 +31,7 @@ const FoodServiceSummary: React.FC = () => {
   const weeklyMaintenanceExpenses = maintenanceExpenses / 52;
   const weeklyTotalProductsPrice = totalProductsPrice / 52;
 
-  const content = language === 'Francais' ? translations.french : translations.english;
+  const content = language === 'Francais' ? translations.Francais : translations.english;
 
   return (
     <div className="bg-white shadow rounded-lg p-6">

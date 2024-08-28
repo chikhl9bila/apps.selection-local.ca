@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface Product {
   id: number;
   name: string;
+  nameEn: string;
   description: string;
   format: string;
   price: number;
@@ -97,6 +98,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     {
       id: 1,
       name: 'Porc haché 85%',
+      nameEn: 'Porc hached 85%',
       description: 'Porc haché 85%',
       format: '10 X 500G',
       price: 91.00,

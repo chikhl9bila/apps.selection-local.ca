@@ -4,6 +4,7 @@ import { useProductContext } from '../../contexts/ProductContext';
 
 const Header = () => {
   const {client} = useProductContext() ; 
+  const {language} =  client ;
     return (
       <div className="w-full h-[50vh] flex flex-col justify-between">
         {/* Top Image Section */}
@@ -13,7 +14,7 @@ const Header = () => {
   
         {/* Address Section */}
         <div className="text-center py-8">
-          <h2 className="text-2xl font-bold">LA FAMILLE QUÉBEC ALIMENTATION</h2>
+          <h2 className="text-2xl font-bold"> Selection Local</h2>
           <p className="text-lg mt-2">3035 avenue Maricourt, local 110, Quebec (Qc) G1W 0E9</p>
         </div>
   
