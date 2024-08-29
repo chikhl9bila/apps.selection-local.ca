@@ -182,12 +182,12 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     },
     {
       id: 8,
-      name: 'Tournedos de boeuf',
-      description: 'Tournedos de boeuf',
+      name: 'Filet mignon',
+      description: 'Filet mignon',
       format: '24 X 110G',
       price: 131.00,
-      imageSrc: '/images/product/8.jpg', // Replace with actual path
-      imageAlt: 'Tournedos de boeuf',
+      imageSrc: '/images/product/8.png', // Replace with actual path
+      imageAlt: 'Filet mignon',
       category: 'BOEUF',
       quantities: [1, 1, 1, 0],
       basicQuantities: [1, 1, 1, 0],
