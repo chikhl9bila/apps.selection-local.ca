@@ -170,12 +170,12 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     },
     {
       id: 7,
-      name: 'Bœuf haché 88-92% AAA',
-      description: 'Bœuf haché 88-92% AAA',
+      name: 'AAA Steak minute',
+      description: 'AAA Steak minute',
       format: '10 X 454G',
       price: 94.00,
-      imageSrc: '/images/product/7.jpg', // Replace with actual path
-      imageAlt: 'Bœuf haché 88-92% AAA',
+      imageSrc: '/images/product/7.webp', // Replace with actual path
+      imageAlt: 'AAA Steak minute',
       category: 'BOEUF',
       quantities: [4, 4, 2, 2], // Delivery quantities
       basicQuantities: [4, 4, 2, 2],
